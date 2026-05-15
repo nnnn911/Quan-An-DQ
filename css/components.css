@@ -113,6 +113,53 @@
 /* Full width */
 .btn-block { width: 100%; }
 
+.btn-primary .app-icon,
+.btn-danger .app-icon {
+  filter: brightness(0) invert(1);
+}
+
+.app-icon {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  object-fit: contain;
+  flex: 0 0 auto;
+  vertical-align: -0.125em;
+}
+
+.icon-inline {
+  width: 1em;
+  height: 1em;
+}
+
+.icon-sm {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.icon-md {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.icon-lg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.empty-state-icon .app-icon {
+  width: 4rem;
+  height: 4rem;
+}
+
+.modal-title .app-icon,
+.staff-panel-title .app-icon,
+.staff-muted .app-icon,
+.dropdown-user-points .app-icon,
+.mobile-user-points .app-icon {
+  margin-right: 0.35rem;
+}
+
 /* ============================================
    COMPONENTS: Forms
 ============================================ */
@@ -192,6 +239,12 @@ select.form-control {
   color: var(--color-text-muted);
   pointer-events: none;
   font-size: 1rem;
+}
+.input-group .input-icon .app-icon,
+.input-group .input-icon-right .app-icon {
+  width: 1rem;
+  height: 1rem;
+  filter: opacity(0.62);
 }
 .input-group .input-icon-right {
   position: absolute;
@@ -309,11 +362,11 @@ select.form-control {
 
 /* Menu add button: big '+' in circle */
 .btn-add-cart {
-  width: 44px;
-  height: 44px;
+  width: 33px;
+  height: 33px;
   padding: 0;
   border-radius: var(--radius-full);
-  font-size: 2.5rem;
+  font-size: 2.0rem;
   line-height: 1;
   font-weight: 300;
   display: inline-flex;
@@ -334,7 +387,7 @@ select.form-control {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(13, 43, 15, 0.6);
+  background: transparent;
   backdrop-filter: blur(6px);
   z-index: var(--z-modal);
   display: flex;
@@ -419,6 +472,13 @@ select.form-control {
   width: calc(100vw - 2rem);
 }
 
+body:has(.page-content--staff) .toast-container {
+  top: auto;
+  right: auto;
+  bottom: 1rem;
+  left: 1rem;
+}
+
 .toast {
   display: flex;
   align-items: flex-start;
@@ -431,6 +491,10 @@ select.form-control {
   animation: slideDown 0.3s ease forwards;
   position: relative;
   overflow: hidden;
+}
+
+body:has(.page-content--staff) .toast {
+  animation-name: slideUp;
 }
 .toast::after {
   content: '';

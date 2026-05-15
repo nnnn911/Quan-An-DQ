@@ -1,0 +1,1922 @@
+{
+  "schemaVersion": 5,
+  "users": [
+    {
+      "id": "000000",
+      "name": "customer",
+      "password": "123456",
+      "phone": "0901234567",
+      "points": 0,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "000001",
+      "name": "Đỗ Hữu Dũng",
+      "password": "893505",
+      "phone": "0997310111",
+      "points": 69,
+      "createdAt": "2025-09-01T22:39:34.000Z"
+    },
+    {
+      "id": "000002",
+      "name": "Đặng Quỳnh Hoa",
+      "password": "303935",
+      "phone": "0367956539",
+      "points": 140,
+      "createdAt": "2025-09-03T00:41:45.000Z"
+    },
+    {
+      "id": "000003",
+      "name": "Bùi Mai Mai",
+      "password": "827782",
+      "phone": "0787270592",
+      "points": 144,
+      "createdAt": "2025-09-04T09:48:26.000Z"
+    },
+    {
+      "id": "000004",
+      "name": "Hồ Khánh Quân",
+      "password": "918530",
+      "phone": "0956935111",
+      "points": 12,
+      "createdAt": "2025-09-06T02:51:01.000Z"
+    },
+    {
+      "id": "000005",
+      "name": "Vũ Tuấn Bình",
+      "password": "354476",
+      "phone": "0783453453",
+      "points": 65,
+      "createdAt": "2025-09-07T03:06:03.000Z"
+    },
+    {
+      "id": "000006",
+      "name": "Tạ Phương Dung",
+      "password": "534812",
+      "phone": "0703077774",
+      "points": 1,
+      "createdAt": "2025-09-08T03:34:20.000Z"
+    },
+    {
+      "id": "000007",
+      "name": "Hoàng Quỳnh Nhi",
+      "password": "372669",
+      "phone": "0510347694",
+      "points": 94,
+      "createdAt": "2025-09-09T10:17:26.000Z"
+    },
+    {
+      "id": "000008",
+      "name": "Phạm Hà Ngân",
+      "password": "351640",
+      "phone": "0504288918",
+      "points": 15,
+      "createdAt": "2025-09-10T10:46:32.000Z"
+    },
+    {
+      "id": "000009",
+      "name": "Vũ Gia Trung",
+      "password": "200002",
+      "phone": "0799573849",
+      "points": 81,
+      "createdAt": "2025-09-12T02:03:55.000Z"
+    },
+    {
+      "id": "000010",
+      "name": "Võ Quỳnh Phương",
+      "password": "717083",
+      "phone": "0541458888",
+      "points": 73,
+      "createdAt": "2025-09-13T02:49:52.000Z"
+    },
+    {
+      "id": "000011",
+      "name": "Dương Anh Tùng",
+      "password": "282360",
+      "phone": "0542823643",
+      "points": 80,
+      "createdAt": "2025-09-14T14:35:16.000Z"
+    },
+    {
+      "id": "000012",
+      "name": "Bùi Thị Trâm",
+      "password": "919681",
+      "phone": "0935241932",
+      "points": 148,
+      "createdAt": "2025-09-15T23:55:19.000Z"
+    },
+    {
+      "id": "000013",
+      "name": "Huỳnh Phương Quỳnh",
+      "password": "713773",
+      "phone": "0755664002",
+      "points": 67,
+      "createdAt": "2025-09-16T09:58:47.000Z"
+    },
+    {
+      "id": "000014",
+      "name": "Lý Bảo Cường",
+      "password": "414082",
+      "phone": "0392386335",
+      "points": 112,
+      "createdAt": "2025-09-17T14:57:38.000Z"
+    },
+    {
+      "id": "000015",
+      "name": "Vũ Thị Oanh",
+      "password": "825387",
+      "phone": "0361835165",
+      "points": 150,
+      "createdAt": "2025-09-19T12:17:54.000Z"
+    },
+    {
+      "id": "000016",
+      "name": "Tạ Thanh Cường",
+      "password": "604055",
+      "phone": "0804914824",
+      "points": 25,
+      "createdAt": "2025-09-20T08:31:10.000Z"
+    },
+    {
+      "id": "000017",
+      "name": "Bùi Tuấn Phúc",
+      "password": "707832",
+      "phone": "0906119339",
+      "points": 127,
+      "createdAt": "2025-09-21T17:01:04.000Z"
+    },
+    {
+      "id": "000018",
+      "name": "Ngô Ngọc Nhi",
+      "password": "755163",
+      "phone": "0927541149",
+      "points": 141,
+      "createdAt": "2025-09-23T04:09:46.000Z"
+    },
+    {
+      "id": "000019",
+      "name": "Lý Văn Tùng",
+      "password": "819534",
+      "phone": "0523191847",
+      "points": 97,
+      "createdAt": "2025-09-24T07:57:25.000Z"
+    },
+    {
+      "id": "000020",
+      "name": "Phan Thu Mai",
+      "password": "916505",
+      "phone": "0793956808",
+      "points": 43,
+      "createdAt": "2025-09-25T04:45:49.000Z"
+    },
+    {
+      "id": "000021",
+      "name": "Tạ Minh Thắng",
+      "password": "022117",
+      "phone": "0854743988",
+      "points": 113,
+      "createdAt": "2025-09-26T22:54:05.000Z"
+    },
+    {
+      "id": "000022",
+      "name": "Đinh Quang Cường",
+      "password": "142782",
+      "phone": "0760662491",
+      "points": 86,
+      "createdAt": "2025-09-27T19:26:27.000Z"
+    },
+    {
+      "id": "000023",
+      "name": "Huỳnh Đức Quân",
+      "password": "324967",
+      "phone": "0758038255",
+      "points": 54,
+      "createdAt": "2025-09-28T22:42:24.000Z"
+    },
+    {
+      "id": "000024",
+      "name": "Bùi Anh Phúc",
+      "password": "772759",
+      "phone": "0706026456",
+      "points": 144,
+      "createdAt": "2025-09-29T19:38:32.000Z"
+    },
+    {
+      "id": "000025",
+      "name": "Đỗ Diệu Vy",
+      "password": "436969",
+      "phone": "0715866853",
+      "points": 9,
+      "createdAt": "2025-10-01T17:40:15.000Z"
+    },
+    {
+      "id": "000026",
+      "name": "Đỗ Mai Hoa",
+      "password": "033093",
+      "phone": "0347904132",
+      "points": 111,
+      "createdAt": "2025-10-02T10:41:56.000Z"
+    },
+    {
+      "id": "000027",
+      "name": "Lý Thành Tú",
+      "password": "272250",
+      "phone": "0999593368",
+      "points": 33,
+      "createdAt": "2025-10-03T20:54:37.000Z"
+    },
+    {
+      "id": "000028",
+      "name": "Lý Tuấn Lâm",
+      "password": "607509",
+      "phone": "0883912211",
+      "points": 133,
+      "createdAt": "2025-10-05T06:42:27.000Z"
+    },
+    {
+      "id": "000029",
+      "name": "Võ Mai Nhi",
+      "password": "454745",
+      "phone": "0928082895",
+      "points": 106,
+      "createdAt": "2025-10-06T15:44:14.000Z"
+    },
+    {
+      "id": "000030",
+      "name": "Nguyễn Quang Lâm",
+      "password": "150328",
+      "phone": "0957411824",
+      "points": 67,
+      "createdAt": "2025-10-07T18:20:45.000Z"
+    },
+    {
+      "id": "000031",
+      "name": "Đặng Khánh Hải",
+      "password": "240274",
+      "phone": "0883207011",
+      "points": 86,
+      "createdAt": "2025-10-08T07:50:14.000Z"
+    },
+    {
+      "id": "000032",
+      "name": "Tạ Minh Khang",
+      "password": "022062",
+      "phone": "0772720776",
+      "points": 94,
+      "createdAt": "2025-10-09T18:36:02.000Z"
+    },
+    {
+      "id": "000033",
+      "name": "Đinh Công Dũng",
+      "password": "500047",
+      "phone": "0523979705",
+      "points": 123,
+      "createdAt": "2025-10-11T11:12:30.000Z"
+    },
+    {
+      "id": "000034",
+      "name": "Cao Diệu Thảo",
+      "password": "009406",
+      "phone": "0851929443",
+      "points": 120,
+      "createdAt": "2025-10-12T17:21:20.000Z"
+    },
+    {
+      "id": "000035",
+      "name": "Phan Thanh Oanh",
+      "password": "512288",
+      "phone": "0745680039",
+      "points": 1,
+      "createdAt": "2025-10-13T17:49:30.000Z"
+    },
+    {
+      "id": "000036",
+      "name": "Cao Thị Hương",
+      "password": "677244",
+      "phone": "0964085957",
+      "points": 10,
+      "createdAt": "2025-10-15T01:27:41.000Z"
+    },
+    {
+      "id": "000037",
+      "name": "Ngô Khánh Hân",
+      "password": "187026",
+      "phone": "0731897850",
+      "points": 5,
+      "createdAt": "2025-10-16T09:08:03.000Z"
+    },
+    {
+      "id": "000038",
+      "name": "Phạm Gia Hưng",
+      "password": "379413",
+      "phone": "0784734397",
+      "points": 94,
+      "createdAt": "2025-10-17T03:18:05.000Z"
+    },
+    {
+      "id": "000039",
+      "name": "Lê Đức Phúc",
+      "password": "014740",
+      "phone": "0888770677",
+      "points": 110,
+      "createdAt": "2025-10-18T01:10:15.000Z"
+    },
+    {
+      "id": "000040",
+      "name": "Mai Hoài Phương",
+      "password": "983227",
+      "phone": "0973067929",
+      "points": 100,
+      "createdAt": "2025-10-19T23:20:36.000Z"
+    },
+    {
+      "id": "000041",
+      "name": "Cao Hà Dung",
+      "password": "390728",
+      "phone": "0396363692",
+      "points": 62,
+      "createdAt": "2025-10-20T12:00:42.000Z"
+    },
+    {
+      "id": "000042",
+      "name": "Võ Mỹ Vy",
+      "password": "419484",
+      "phone": "0858185127",
+      "points": 70,
+      "createdAt": "2025-10-21T18:32:51.000Z"
+    },
+    {
+      "id": "000043",
+      "name": "Cao Thu Phương",
+      "password": "003963",
+      "phone": "0349495852",
+      "points": 7,
+      "createdAt": "2025-10-23T11:05:24.000Z"
+    },
+    {
+      "id": "000044",
+      "name": "Đinh Diệu Phương",
+      "password": "724994",
+      "phone": "0544693428",
+      "points": 24,
+      "createdAt": "2025-10-24T10:26:57.000Z"
+    },
+    {
+      "id": "000045",
+      "name": "Huỳnh Văn Vinh",
+      "password": "685222",
+      "phone": "0858451484",
+      "points": 146,
+      "createdAt": "2025-10-25T19:00:57.000Z"
+    },
+    {
+      "id": "000046",
+      "name": "Hoàng Quang Tùng",
+      "password": "879829",
+      "phone": "0932250665",
+      "points": 125,
+      "createdAt": "2025-10-26T14:01:23.000Z"
+    },
+    {
+      "id": "000047",
+      "name": "Đỗ Ánh Mai",
+      "password": "206135",
+      "phone": "0765590610",
+      "points": 47,
+      "createdAt": "2025-10-28T04:47:52.000Z"
+    },
+    {
+      "id": "000048",
+      "name": "Võ Thu Yến",
+      "password": "084284",
+      "phone": "0518283111",
+      "points": 149,
+      "createdAt": "2025-10-29T07:36:31.000Z"
+    },
+    {
+      "id": "000049",
+      "name": "Võ Tú Thảo",
+      "password": "467041",
+      "phone": "0772507168",
+      "points": 42,
+      "createdAt": "2025-10-30T22:51:42.000Z"
+    },
+    {
+      "id": "000050",
+      "name": "Nguyễn Khánh Dũng",
+      "password": "502337",
+      "phone": "0947051811",
+      "points": 9,
+      "createdAt": "2025-10-31T18:06:52.000Z"
+    },
+    {
+      "id": "000051",
+      "name": "Lê Ánh Anh",
+      "password": "748622",
+      "phone": "0742680470",
+      "points": 7,
+      "createdAt": "2025-11-02T02:57:32.000Z"
+    },
+    {
+      "id": "000052",
+      "name": "Huỳnh Hoài Vinh",
+      "password": "884913",
+      "phone": "0301438507",
+      "points": 64,
+      "createdAt": "2025-11-03T13:09:30.000Z"
+    },
+    {
+      "id": "000053",
+      "name": "Đỗ Tuấn Khang",
+      "password": "299010",
+      "phone": "0800560774",
+      "points": 59,
+      "createdAt": "2025-11-04T19:41:16.000Z"
+    },
+    {
+      "id": "000054",
+      "name": "Phan Thành Thắng",
+      "password": "730859",
+      "phone": "0726287610",
+      "points": 107,
+      "createdAt": "2025-11-05T08:49:23.000Z"
+    },
+    {
+      "id": "000055",
+      "name": "Phạm Anh Kiên",
+      "password": "596661",
+      "phone": "0548142079",
+      "points": 59,
+      "createdAt": "2025-11-06T16:56:41.000Z"
+    },
+    {
+      "id": "000056",
+      "name": "Đinh Ánh Anh",
+      "password": "164301",
+      "phone": "0813380664",
+      "points": 122,
+      "createdAt": "2025-11-08T03:37:35.000Z"
+    },
+    {
+      "id": "000057",
+      "name": "Vũ Bảo Hương",
+      "password": "935889",
+      "phone": "0571124103",
+      "points": 143,
+      "createdAt": "2025-11-09T01:48:57.000Z"
+    },
+    {
+      "id": "000058",
+      "name": "Mai Đức Vinh",
+      "password": "763098",
+      "phone": "0908409106",
+      "points": 37,
+      "createdAt": "2025-11-10T13:09:06.000Z"
+    },
+    {
+      "id": "000059",
+      "name": "Vũ Anh Phúc",
+      "password": "312375",
+      "phone": "0914880622",
+      "points": 74,
+      "createdAt": "2025-11-11T16:54:38.000Z"
+    },
+    {
+      "id": "000060",
+      "name": "Dương Ánh Hân",
+      "password": "384409",
+      "phone": "0790950986",
+      "points": 19,
+      "createdAt": "2025-11-13T07:51:25.000Z"
+    },
+    {
+      "id": "000061",
+      "name": "Mai Hữu Vinh",
+      "password": "055185",
+      "phone": "0328400211",
+      "points": 64,
+      "createdAt": "2025-11-14T10:58:36.000Z"
+    },
+    {
+      "id": "000062",
+      "name": "Đặng Ánh Quỳnh",
+      "password": "056336",
+      "phone": "0747905492",
+      "points": 141,
+      "createdAt": "2025-11-15T02:59:13.000Z"
+    },
+    {
+      "id": "000063",
+      "name": "Hoàng Phương Yến",
+      "password": "239864",
+      "phone": "0328609687",
+      "points": 1,
+      "createdAt": "2025-11-17T00:05:07.000Z"
+    },
+    {
+      "id": "000064",
+      "name": "Võ Tuấn Sơn",
+      "password": "249506",
+      "phone": "0337661941",
+      "points": 147,
+      "createdAt": "2025-11-18T03:10:39.000Z"
+    },
+    {
+      "id": "000065",
+      "name": "Đinh Bảo Phúc",
+      "password": "126830",
+      "phone": "0343302307",
+      "points": 2,
+      "createdAt": "2025-11-18T17:18:33.000Z"
+    },
+    {
+      "id": "000066",
+      "name": "Lê Gia Hải",
+      "password": "413148",
+      "phone": "0927671005",
+      "points": 55,
+      "createdAt": "2025-11-20T13:20:09.000Z"
+    },
+    {
+      "id": "000067",
+      "name": "Vũ Ánh Hương",
+      "password": "983492",
+      "phone": "0782816035",
+      "points": 73,
+      "createdAt": "2025-11-21T16:56:35.000Z"
+    },
+    {
+      "id": "000068",
+      "name": "Hồ Minh Hải",
+      "password": "065600",
+      "phone": "0392030000",
+      "points": 59,
+      "createdAt": "2025-11-22T08:07:05.000Z"
+    },
+    {
+      "id": "000069",
+      "name": "Ngô Anh Hưng",
+      "password": "211367",
+      "phone": "0753042997",
+      "points": 13,
+      "createdAt": "2025-11-23T18:59:31.000Z"
+    },
+    {
+      "id": "000070",
+      "name": "Tạ Văn Cường",
+      "password": "923907",
+      "phone": "0873274476",
+      "points": 51,
+      "createdAt": "2025-11-24T21:12:45.000Z"
+    },
+    {
+      "id": "000071",
+      "name": "Đỗ Khánh Kiên",
+      "password": "360863",
+      "phone": "0883162561",
+      "points": 150,
+      "createdAt": "2025-11-26T05:08:19.000Z"
+    },
+    {
+      "id": "000072",
+      "name": "Võ Anh Long",
+      "password": "096741",
+      "phone": "0885129189",
+      "points": 62,
+      "createdAt": "2025-11-27T18:01:18.000Z"
+    },
+    {
+      "id": "000073",
+      "name": "Lê Quang Cường",
+      "password": "179923",
+      "phone": "0999224926",
+      "points": 97,
+      "createdAt": "2025-11-28T18:23:50.000Z"
+    },
+    {
+      "id": "000074",
+      "name": "Phan Khánh An",
+      "password": "205257",
+      "phone": "0769839869",
+      "points": 144,
+      "createdAt": "2025-11-30T00:22:11.000Z"
+    },
+    {
+      "id": "000075",
+      "name": "Đỗ Anh Tùng",
+      "password": "938814",
+      "phone": "0552190115",
+      "points": 109,
+      "createdAt": "2025-12-01T13:39:07.000Z"
+    },
+    {
+      "id": "000076",
+      "name": "Dương Tuấn Nam",
+      "password": "810159",
+      "phone": "0708956224",
+      "points": 75,
+      "createdAt": "2025-12-02T10:18:51.000Z"
+    },
+    {
+      "id": "000077",
+      "name": "Tạ Thành Khang",
+      "password": "523437",
+      "phone": "0842796396",
+      "points": 76,
+      "createdAt": "2025-12-03T07:23:32.000Z"
+    },
+    {
+      "id": "000078",
+      "name": "Nguyễn Phương Oanh",
+      "password": "067979",
+      "phone": "0941182872",
+      "points": 47,
+      "createdAt": "2025-12-04T12:02:50.000Z"
+    },
+    {
+      "id": "000079",
+      "name": "Huỳnh Phương Quỳnh 2",
+      "password": "052587",
+      "phone": "0863678193",
+      "points": 57,
+      "createdAt": "2025-12-05T16:54:01.000Z"
+    },
+    {
+      "id": "000080",
+      "name": "Nguyễn Khánh Trâm",
+      "password": "622426",
+      "phone": "0301903994",
+      "points": 32,
+      "createdAt": "2025-12-07T09:32:17.000Z"
+    },
+    {
+      "id": "000081",
+      "name": "Bùi Ngọc Giang",
+      "password": "972704",
+      "phone": "0917607087",
+      "points": 88,
+      "createdAt": "2025-12-08T12:55:57.000Z"
+    },
+    {
+      "id": "000082",
+      "name": "Hồ Nhật Thắng",
+      "password": "853513",
+      "phone": "0882699350",
+      "points": 12,
+      "createdAt": "2025-12-09T14:10:59.000Z"
+    },
+    {
+      "id": "000083",
+      "name": "Bùi Văn Nam",
+      "password": "479765",
+      "phone": "0863698505",
+      "points": 139,
+      "createdAt": "2025-12-11T00:17:38.000Z"
+    },
+    {
+      "id": "000084",
+      "name": "Đặng Quang Sơn",
+      "password": "172716",
+      "phone": "0718282901",
+      "points": 89,
+      "createdAt": "2025-12-12T10:01:55.000Z"
+    },
+    {
+      "id": "000085",
+      "name": "Trần Gia Phúc",
+      "password": "866236",
+      "phone": "0521577396",
+      "points": 51,
+      "createdAt": "2025-12-13T11:43:55.000Z"
+    },
+    {
+      "id": "000086",
+      "name": "Võ Tuấn Lâm",
+      "password": "319063",
+      "phone": "0880017171",
+      "points": 106,
+      "createdAt": "2025-12-14T11:39:55.000Z"
+    },
+    {
+      "id": "000087",
+      "name": "Hồ Minh Tú",
+      "password": "193471",
+      "phone": "0999643831",
+      "points": 45,
+      "createdAt": "2025-12-15T10:25:15.000Z"
+    },
+    {
+      "id": "000088",
+      "name": "Phan Mỹ Chi",
+      "password": "992283",
+      "phone": "0819717495",
+      "points": 25,
+      "createdAt": "2025-12-16T22:10:48.000Z"
+    },
+    {
+      "id": "000089",
+      "name": "Phan Thanh Giang",
+      "password": "390978",
+      "phone": "0929295502",
+      "points": 40,
+      "createdAt": "2025-12-18T14:57:41.000Z"
+    },
+    {
+      "id": "000090",
+      "name": "Đinh Khánh Việt",
+      "password": "811734",
+      "phone": "0884744480",
+      "points": 32,
+      "createdAt": "2025-12-19T07:27:06.000Z"
+    },
+    {
+      "id": "000091",
+      "name": "Dương Thanh Lan",
+      "password": "917409",
+      "phone": "0814068241",
+      "points": 96,
+      "createdAt": "2025-12-20T08:11:56.000Z"
+    },
+    {
+      "id": "000092",
+      "name": "Nguyễn Bảo Sơn",
+      "password": "706732",
+      "phone": "0336439381",
+      "points": 31,
+      "createdAt": "2025-12-21T15:21:25.000Z"
+    },
+    {
+      "id": "000093",
+      "name": "Dương Thu Anh",
+      "password": "954113",
+      "phone": "0398271105",
+      "points": 38,
+      "createdAt": "2025-12-22T22:36:48.000Z"
+    },
+    {
+      "id": "000094",
+      "name": "Trần Thu Anh",
+      "password": "709476",
+      "phone": "0913083019",
+      "points": 130,
+      "createdAt": "2025-12-24T10:12:36.000Z"
+    },
+    {
+      "id": "000095",
+      "name": "Mai Gia Lâm",
+      "password": "905885",
+      "phone": "0380777152",
+      "points": 109,
+      "createdAt": "2025-12-25T07:36:46.000Z"
+    },
+    {
+      "id": "000096",
+      "name": "Đặng Minh Tú",
+      "password": "373943",
+      "phone": "0998727916",
+      "points": 28,
+      "createdAt": "2025-12-26T10:59:40.000Z"
+    },
+    {
+      "id": "000097",
+      "name": "Phạm Diệu Lan",
+      "password": "051036",
+      "phone": "0570392333",
+      "points": 44,
+      "createdAt": "2025-12-28T03:31:43.000Z"
+    },
+    {
+      "id": "000098",
+      "name": "Phan Thị Quỳnh",
+      "password": "852741",
+      "phone": "0858610935",
+      "points": 75,
+      "createdAt": "2025-12-29T11:34:14.000Z"
+    },
+    {
+      "id": "000099",
+      "name": "Ngô Hữu Tùng",
+      "password": "538370",
+      "phone": "0996391400",
+      "points": 0,
+      "createdAt": "2025-12-30T07:07:21.000Z"
+    },
+    {
+      "id": "000100",
+      "name": "Cao Diệu Oanh",
+      "password": "568802",
+      "phone": "0982098732",
+      "points": 32,
+      "createdAt": "2025-12-31T15:37:39.000Z"
+    },
+    {
+      "id": "000101",
+      "name": "Cao Bảo Phương",
+      "password": "712763",
+      "phone": "0518071886",
+      "points": 148,
+      "createdAt": "2026-01-01T11:16:10.000Z"
+    },
+    {
+      "id": "000102",
+      "name": "Phạm Tuấn Việt",
+      "password": "800937",
+      "phone": "0845798763",
+      "points": 126,
+      "createdAt": "2026-01-03T05:45:09.000Z"
+    },
+    {
+      "id": "000103",
+      "name": "Mai Hoài Oanh",
+      "password": "117726",
+      "phone": "0782218006",
+      "points": 128,
+      "createdAt": "2026-01-04T00:01:28.000Z"
+    },
+    {
+      "id": "000104",
+      "name": "Dương Ánh Vy",
+      "password": "051014",
+      "phone": "0546207529",
+      "points": 139,
+      "createdAt": "2026-01-05T03:42:28.000Z"
+    },
+    {
+      "id": "000105",
+      "name": "Hoàng Hoài Phúc",
+      "password": "926017",
+      "phone": "0554452853",
+      "points": 79,
+      "createdAt": "2026-01-06T20:44:39.000Z"
+    },
+    {
+      "id": "000106",
+      "name": "Võ Diệu Nhi",
+      "password": "581077",
+      "phone": "0524637336",
+      "points": 30,
+      "createdAt": "2026-01-08T00:56:39.000Z"
+    },
+    {
+      "id": "000107",
+      "name": "Mai Hoài Sơn",
+      "password": "518830",
+      "phone": "0351953192",
+      "points": 7,
+      "createdAt": "2026-01-09T13:00:35.000Z"
+    },
+    {
+      "id": "000108",
+      "name": "Vũ Quỳnh Chi",
+      "password": "645452",
+      "phone": "0318167110",
+      "points": 147,
+      "createdAt": "2026-01-10T09:50:37.000Z"
+    },
+    {
+      "id": "000109",
+      "name": "Bùi Thị Thảo",
+      "password": "703190",
+      "phone": "0785619394",
+      "points": 125,
+      "createdAt": "2026-01-11T05:07:17.000Z"
+    },
+    {
+      "id": "000110",
+      "name": "Vũ Thanh Khang",
+      "password": "699553",
+      "phone": "0312143637",
+      "points": 53,
+      "createdAt": "2026-01-12T11:52:24.000Z"
+    },
+    {
+      "id": "000111",
+      "name": "Dương Quỳnh Ngân",
+      "password": "596749",
+      "phone": "0303583343",
+      "points": 42,
+      "createdAt": "2026-01-14T00:48:22.000Z"
+    },
+    {
+      "id": "000112",
+      "name": "Lê Quỳnh Ngân",
+      "password": "794922",
+      "phone": "0798520306",
+      "points": 82,
+      "createdAt": "2026-01-15T10:49:38.000Z"
+    },
+    {
+      "id": "000113",
+      "name": "Đinh Anh Kiên",
+      "password": "329041",
+      "phone": "0753959083",
+      "points": 146,
+      "createdAt": "2026-01-16T16:13:18.000Z"
+    },
+    {
+      "id": "000114",
+      "name": "Huỳnh Văn Hưng",
+      "password": "747571",
+      "phone": "0370230882",
+      "points": 120,
+      "createdAt": "2026-01-17T05:16:46.000Z"
+    },
+    {
+      "id": "000115",
+      "name": "Phan Nhật Vinh",
+      "password": "126960",
+      "phone": "0367034939",
+      "points": 2,
+      "createdAt": "2026-01-18T15:24:05.000Z"
+    },
+    {
+      "id": "000116",
+      "name": "Cao Minh Cường",
+      "password": "191689",
+      "phone": "0768402945",
+      "points": 71,
+      "createdAt": "2026-01-19T21:47:30.000Z"
+    },
+    {
+      "id": "000117",
+      "name": "Đỗ Hoài Ngân",
+      "password": "582241",
+      "phone": "0929780983",
+      "points": 126,
+      "createdAt": "2026-01-20T22:30:03.000Z"
+    },
+    {
+      "id": "000118",
+      "name": "Võ Khánh Anh",
+      "password": "119296",
+      "phone": "0806145721",
+      "points": 73,
+      "createdAt": "2026-01-22T20:37:04.000Z"
+    },
+    {
+      "id": "000119",
+      "name": "Hồ Tú Phương",
+      "password": "112416",
+      "phone": "0851464839",
+      "points": 11,
+      "createdAt": "2026-01-24T01:49:42.000Z"
+    },
+    {
+      "id": "000120",
+      "name": "Hồ Khánh Nam",
+      "password": "609286",
+      "phone": "0829737836",
+      "points": 59,
+      "createdAt": "2026-01-24T23:18:56.000Z"
+    },
+    {
+      "id": "000121",
+      "name": "Nguyễn Tuấn Hải",
+      "password": "419319",
+      "phone": "0346805612",
+      "points": 87,
+      "createdAt": "2026-01-25T18:25:11.000Z"
+    },
+    {
+      "id": "000122",
+      "name": "Tạ Đức Phúc",
+      "password": "054646",
+      "phone": "0524648873",
+      "points": 55,
+      "createdAt": "2026-01-27T03:23:42.000Z"
+    },
+    {
+      "id": "000123",
+      "name": "Đặng Gia Tú",
+      "password": "868185",
+      "phone": "0345610473",
+      "points": 45,
+      "createdAt": "2026-01-28T07:12:13.000Z"
+    },
+    {
+      "id": "000124",
+      "name": "Bùi Quỳnh Mai",
+      "password": "279619",
+      "phone": "0924494252",
+      "points": 102,
+      "createdAt": "2026-01-30T00:37:23.000Z"
+    },
+    {
+      "id": "000125",
+      "name": "Huỳnh Hoài Khang",
+      "password": "354058",
+      "phone": "0966106036",
+      "points": 20,
+      "createdAt": "2026-01-30T22:14:16.000Z"
+    },
+    {
+      "id": "000126",
+      "name": "Ngô Thanh Quỳnh",
+      "password": "720630",
+      "phone": "0538377689",
+      "points": 43,
+      "createdAt": "2026-02-01T03:18:07.000Z"
+    },
+    {
+      "id": "000127",
+      "name": "Đặng Thu Nhi",
+      "password": "328176",
+      "phone": "0399444333",
+      "points": 63,
+      "createdAt": "2026-02-02T09:17:10.000Z"
+    },
+    {
+      "id": "000128",
+      "name": "Huỳnh Ngọc Hương",
+      "password": "459957",
+      "phone": "0771055074",
+      "points": 20,
+      "createdAt": "2026-02-03T13:26:05.000Z"
+    },
+    {
+      "id": "000129",
+      "name": "Võ Thu Thảo",
+      "password": "283809",
+      "phone": "0793045656",
+      "points": 102,
+      "createdAt": "2026-02-05T02:06:07.000Z"
+    },
+    {
+      "id": "000130",
+      "name": "Võ Hoài Dũng",
+      "password": "072833",
+      "phone": "0842770504",
+      "points": 121,
+      "createdAt": "2026-02-06T03:34:14.000Z"
+    },
+    {
+      "id": "000131",
+      "name": "Lý Thanh Trâm",
+      "password": "762798",
+      "phone": "0730509785",
+      "points": 60,
+      "createdAt": "2026-02-07T14:17:52.000Z"
+    },
+    {
+      "id": "000132",
+      "name": "Tạ Đức Cường",
+      "password": "113904",
+      "phone": "0584495628",
+      "points": 85,
+      "createdAt": "2026-02-08T20:48:04.000Z"
+    },
+    {
+      "id": "000133",
+      "name": "Phan Khánh Quỳnh",
+      "password": "181466",
+      "phone": "0536775253",
+      "points": 102,
+      "createdAt": "2026-02-09T14:02:44.000Z"
+    },
+    {
+      "id": "000134",
+      "name": "Ngô Thu Yến",
+      "password": "432546",
+      "phone": "0880510820",
+      "points": 118,
+      "createdAt": "2026-02-11T05:20:16.000Z"
+    },
+    {
+      "id": "000135",
+      "name": "Hoàng Ngọc Quỳnh",
+      "password": "718870",
+      "phone": "0544911671",
+      "points": 90,
+      "createdAt": "2026-02-11T22:48:08.000Z"
+    },
+    {
+      "id": "000136",
+      "name": "Đinh Diệu Vy",
+      "password": "514648",
+      "phone": "0724284461",
+      "points": 86,
+      "createdAt": "2026-02-13T03:19:40.000Z"
+    },
+    {
+      "id": "000137",
+      "name": "Võ Thu Hân",
+      "password": "892130",
+      "phone": "0788470703",
+      "points": 39,
+      "createdAt": "2026-02-14T04:16:33.000Z"
+    },
+    {
+      "id": "000138",
+      "name": "Bùi Quang Vinh",
+      "password": "230295",
+      "phone": "0348940081",
+      "points": 105,
+      "createdAt": "2026-02-15T17:30:49.000Z"
+    },
+    {
+      "id": "000139",
+      "name": "Vũ Thị Quỳnh",
+      "password": "773109",
+      "phone": "0894225246",
+      "points": 40,
+      "createdAt": "2026-02-17T00:15:55.000Z"
+    },
+    {
+      "id": "000140",
+      "name": "Ngô Ánh Hân",
+      "password": "261894",
+      "phone": "0836268526",
+      "points": 109,
+      "createdAt": "2026-02-18T01:39:43.000Z"
+    },
+    {
+      "id": "000141",
+      "name": "Võ Anh Hải",
+      "password": "506932",
+      "phone": "0554048101",
+      "points": 1,
+      "createdAt": "2026-02-19T17:05:55.000Z"
+    },
+    {
+      "id": "000142",
+      "name": "Ngô Hữu Hải",
+      "password": "300559",
+      "phone": "0545045726",
+      "points": 123,
+      "createdAt": "2026-02-20T22:33:57.000Z"
+    },
+    {
+      "id": "000143",
+      "name": "Dương Đức Tùng",
+      "password": "237226",
+      "phone": "0779351475",
+      "points": 119,
+      "createdAt": "2026-02-21T19:07:29.000Z"
+    },
+    {
+      "id": "000144",
+      "name": "Võ Tú Dung",
+      "password": "907082",
+      "phone": "0884556207",
+      "points": 11,
+      "createdAt": "2026-02-22T20:30:53.000Z"
+    },
+    {
+      "id": "000145",
+      "name": "Tạ Hà Phương",
+      "password": "077669",
+      "phone": "0997304385",
+      "points": 81,
+      "createdAt": "2026-02-24T15:26:56.000Z"
+    },
+    {
+      "id": "000146",
+      "name": "Tạ Quang Sơn",
+      "password": "497751",
+      "phone": "0743155157",
+      "points": 55,
+      "createdAt": "2026-02-25T10:21:27.000Z"
+    },
+    {
+      "id": "000147",
+      "name": "Vũ Hữu Tùng",
+      "password": "969675",
+      "phone": "0742995001",
+      "points": 68,
+      "createdAt": "2026-02-27T01:32:42.000Z"
+    },
+    {
+      "id": "000148",
+      "name": "Nguyễn Nhật Bình",
+      "password": "930840",
+      "phone": "0366569378",
+      "points": 24,
+      "createdAt": "2026-02-28T05:42:04.000Z"
+    },
+    {
+      "id": "000149",
+      "name": "Cao Quang Sơn",
+      "password": "751229",
+      "phone": "0327330149",
+      "points": 3,
+      "createdAt": "2026-03-01T14:38:13.000Z"
+    },
+    {
+      "id": "000150",
+      "name": "Đinh Anh Lâm",
+      "password": "004040",
+      "phone": "0718387624",
+      "points": 58,
+      "createdAt": "2026-03-02T05:59:35.000Z"
+    },
+    {
+      "id": "000151",
+      "name": "Dương Thanh Tú",
+      "password": "199844",
+      "phone": "0785477123",
+      "points": 95,
+      "createdAt": "2026-03-03T10:24:18.000Z"
+    },
+    {
+      "id": "000152",
+      "name": "Bùi Bảo Trang",
+      "password": "662302",
+      "phone": "0382175329",
+      "points": 9,
+      "createdAt": "2026-03-05T05:22:35.000Z"
+    },
+    {
+      "id": "000153",
+      "name": "Dương Thu Hương",
+      "password": "949512",
+      "phone": "0986210350",
+      "points": 66,
+      "createdAt": "2026-03-06T04:06:03.000Z"
+    },
+    {
+      "id": "000154",
+      "name": "Nguyễn Bảo Hân",
+      "password": "805294",
+      "phone": "0795891198",
+      "points": 51,
+      "createdAt": "2026-03-07T14:46:47.000Z"
+    },
+    {
+      "id": "000155",
+      "name": "Đặng Thanh Giang",
+      "password": "466245",
+      "phone": "0889713448",
+      "points": 86,
+      "createdAt": "2026-03-08T11:39:23.000Z"
+    },
+    {
+      "id": "000156",
+      "name": "Trần Đức Thắng",
+      "password": "822922",
+      "phone": "0318653778",
+      "points": 86,
+      "createdAt": "2026-03-09T14:21:35.000Z"
+    },
+    {
+      "id": "000157",
+      "name": "Cao Thị Anh",
+      "password": "069048",
+      "phone": "0365467285",
+      "points": 26,
+      "createdAt": "2026-03-11T02:53:51.000Z"
+    },
+    {
+      "id": "000158",
+      "name": "Võ Đức Nam",
+      "password": "260788",
+      "phone": "0325799517",
+      "points": 109,
+      "createdAt": "2026-03-12T09:48:33.000Z"
+    },
+    {
+      "id": "000159",
+      "name": "Huỳnh Bảo Linh",
+      "password": "696975",
+      "phone": "0794849468",
+      "points": 79,
+      "createdAt": "2026-03-13T03:03:42.000Z"
+    },
+    {
+      "id": "000160",
+      "name": "Cao Quỳnh Giang",
+      "password": "963896",
+      "phone": "0713418082",
+      "points": 49,
+      "createdAt": "2026-03-14T07:16:02.000Z"
+    },
+    {
+      "id": "000161",
+      "name": "Cao Anh Lâm",
+      "password": "198926",
+      "phone": "0808397235",
+      "points": 20,
+      "createdAt": "2026-03-15T12:52:31.000Z"
+    },
+    {
+      "id": "000162",
+      "name": "Huỳnh Quang Sơn",
+      "password": "900306",
+      "phone": "0945432075",
+      "points": 135,
+      "createdAt": "2026-03-17T09:16:43.000Z"
+    },
+    {
+      "id": "000163",
+      "name": "Cao Diệu Trang",
+      "password": "082178",
+      "phone": "0711736545",
+      "points": 132,
+      "createdAt": "2026-03-17T19:33:33.000Z"
+    },
+    {
+      "id": "000164",
+      "name": "Huỳnh Thanh Linh",
+      "password": "701701",
+      "phone": "0826031909",
+      "points": 73,
+      "createdAt": "2026-03-19T07:06:01.000Z"
+    },
+    {
+      "id": "000165",
+      "name": "Huỳnh Quang Khang",
+      "password": "022482",
+      "phone": "0910378719",
+      "points": 67,
+      "createdAt": "2026-03-21T00:31:02.000Z"
+    },
+    {
+      "id": "000166",
+      "name": "Dương Thanh Nhi",
+      "password": "879241",
+      "phone": "0748419314",
+      "points": 23,
+      "createdAt": "2026-03-21T19:38:57.000Z"
+    },
+    {
+      "id": "000167",
+      "name": "Vũ Hoài Nam",
+      "password": "162132",
+      "phone": "0771904724",
+      "points": 70,
+      "createdAt": "2026-03-23T09:12:13.000Z"
+    },
+    {
+      "id": "000168",
+      "name": "Đinh Bảo Tú",
+      "password": "971644",
+      "phone": "0904128710",
+      "points": 36,
+      "createdAt": "2026-03-23T23:20:05.000Z"
+    },
+    {
+      "id": "000169",
+      "name": "Tạ Đức Phúc 2",
+      "password": "118177",
+      "phone": "0820967029",
+      "points": 53,
+      "createdAt": "2026-03-25T21:48:53.000Z"
+    },
+    {
+      "id": "000170",
+      "name": "Cao Diệu Dung",
+      "password": "628141",
+      "phone": "0551686423",
+      "points": 20,
+      "createdAt": "2026-03-26T17:44:09.000Z"
+    },
+    {
+      "id": "000171",
+      "name": "Dương Mỹ Thảo",
+      "password": "966210",
+      "phone": "0718404658",
+      "points": 93,
+      "createdAt": "2026-03-27T14:08:56.000Z"
+    },
+    {
+      "id": "000172",
+      "name": "Hoàng Diệu Hoa",
+      "password": "761599",
+      "phone": "0332896908",
+      "points": 0,
+      "createdAt": "2026-03-29T04:08:25.000Z"
+    },
+    {
+      "id": "000173",
+      "name": "Nguyễn Thành Nam",
+      "password": "265183",
+      "phone": "0557717473",
+      "points": 129,
+      "createdAt": "2026-03-30T09:15:03.000Z"
+    },
+    {
+      "id": "000174",
+      "name": "Cao Hà Dung 2",
+      "password": "937693",
+      "phone": "0902672631",
+      "points": 49,
+      "createdAt": "2026-03-31T14:28:19.000Z"
+    },
+    {
+      "id": "000175",
+      "name": "Phan Mai Anh",
+      "password": "781461",
+      "phone": "0991083955",
+      "points": 55,
+      "createdAt": "2026-04-02T05:44:44.000Z"
+    },
+    {
+      "id": "000176",
+      "name": "Cao Khánh Long",
+      "password": "878595",
+      "phone": "0877789043",
+      "points": 139,
+      "createdAt": "2026-04-03T05:46:48.000Z"
+    },
+    {
+      "id": "000177",
+      "name": "Mai Thanh Hải",
+      "password": "530799",
+      "phone": "0526271382",
+      "points": 28,
+      "createdAt": "2026-04-04T03:53:41.000Z"
+    },
+    {
+      "id": "000178",
+      "name": "Hồ Mai Chi",
+      "password": "042832",
+      "phone": "0907108250",
+      "points": 89,
+      "createdAt": "2026-04-05T02:12:33.000Z"
+    },
+    {
+      "id": "000179",
+      "name": "Tạ Văn Tùng",
+      "password": "574640",
+      "phone": "0305615947",
+      "points": 55,
+      "createdAt": "2026-04-06T19:58:17.000Z"
+    },
+    {
+      "id": "000180",
+      "name": "Hoàng Tuấn Nam",
+      "password": "083199",
+      "phone": "0369772598",
+      "points": 19,
+      "createdAt": "2026-04-07T17:28:50.000Z"
+    },
+    {
+      "id": "000181",
+      "name": "Lê Thành Dũng",
+      "password": "187305",
+      "phone": "0963033506",
+      "points": 72,
+      "createdAt": "2026-04-09T10:58:12.000Z"
+    },
+    {
+      "id": "000182",
+      "name": "Hoàng Nhật Tú",
+      "password": "799125",
+      "phone": "0525393292",
+      "points": 29,
+      "createdAt": "2026-04-09T23:33:28.000Z"
+    },
+    {
+      "id": "000183",
+      "name": "Ngô Gia Long",
+      "password": "200211",
+      "phone": "0520561524",
+      "points": 26,
+      "createdAt": "2026-04-11T22:06:35.000Z"
+    },
+    {
+      "id": "000184",
+      "name": "Đỗ Văn Thắng",
+      "password": "136336",
+      "phone": "0522403223",
+      "points": 78,
+      "createdAt": "2026-04-12T08:49:38.000Z"
+    },
+    {
+      "id": "000185",
+      "name": "Đinh Hữu Hưng",
+      "password": "015057",
+      "phone": "0552242144",
+      "points": 140,
+      "createdAt": "2026-04-14T04:25:50.000Z"
+    },
+    {
+      "id": "000186",
+      "name": "Lê Minh Long",
+      "password": "945232",
+      "phone": "0513210547",
+      "points": 127,
+      "createdAt": "2026-04-15T09:10:12.000Z"
+    },
+    {
+      "id": "000187",
+      "name": "Võ Gia Cường",
+      "password": "726992",
+      "phone": "0801963159",
+      "points": 93,
+      "createdAt": "2026-04-16T05:15:54.000Z"
+    },
+    {
+      "id": "000188",
+      "name": "Đinh Ngọc Oanh",
+      "password": "796720",
+      "phone": "0590443081",
+      "points": 11,
+      "createdAt": "2026-04-17T15:42:26.000Z"
+    },
+    {
+      "id": "000189",
+      "name": "Vũ Đức Việt",
+      "password": "177465",
+      "phone": "0522203961",
+      "points": 72,
+      "createdAt": "2026-04-18T21:45:36.000Z"
+    },
+    {
+      "id": "000190",
+      "name": "Ngô Mỹ Quỳnh",
+      "password": "803176",
+      "phone": "0378439852",
+      "points": 129,
+      "createdAt": "2026-04-19T22:38:05.000Z"
+    },
+    {
+      "id": "000191",
+      "name": "Hoàng Tuấn Việt",
+      "password": "503140",
+      "phone": "0534172144",
+      "points": 131,
+      "createdAt": "2026-04-21T07:32:52.000Z"
+    },
+    {
+      "id": "000192",
+      "name": "Hoàng Hoài Vy",
+      "password": "658264",
+      "phone": "0789343650",
+      "points": 59,
+      "createdAt": "2026-04-22T16:38:15.000Z"
+    },
+    {
+      "id": "000193",
+      "name": "Hồ Quỳnh Hương",
+      "password": "491650",
+      "phone": "0510859797",
+      "points": 141,
+      "createdAt": "2026-04-23T09:37:35.000Z"
+    },
+    {
+      "id": "000194",
+      "name": "Phan Văn Hưng",
+      "password": "302506",
+      "phone": "0849873176",
+      "points": 77,
+      "createdAt": "2026-04-25T02:34:49.000Z"
+    },
+    {
+      "id": "000195",
+      "name": "Hồ Đức Kiên",
+      "password": "837053",
+      "phone": "0822064944",
+      "points": 0,
+      "createdAt": "2026-04-26T05:29:46.000Z"
+    },
+    {
+      "id": "000196",
+      "name": "Hoàng Đức Bình",
+      "password": "607308",
+      "phone": "0864099086",
+      "points": 52,
+      "createdAt": "2026-04-27T01:26:35.000Z"
+    },
+    {
+      "id": "000197",
+      "name": "Trần Hoài Thảo",
+      "password": "084039",
+      "phone": "0818349846",
+      "points": 20,
+      "createdAt": "2026-04-28T23:26:47.000Z"
+    },
+    {
+      "id": "000198",
+      "name": "Lê Gia An",
+      "password": "050640",
+      "phone": "0701530801",
+      "points": 14,
+      "createdAt": "2026-04-29T09:56:00.000Z"
+    },
+    {
+      "id": "000199",
+      "name": "Phạm Tú Hoa",
+      "password": "204427",
+      "phone": "0858650573",
+      "points": 123,
+      "createdAt": "2026-05-01T00:00:00.000Z"
+    }
+  ],
+  "staffUsers": [
+    {
+      "id": "E00000",
+      "name": "Nhân viên",
+      "password": "123456",
+      "phone": "0902222333",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+  "shipperUsers": [
+    {
+      "id": "D00000",
+      "name": "Shipper",
+      "password": "123456",
+      "phone": "0904444555",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+  "ownerUsers": [
+    {
+      "id": "A00000",
+      "name": "Chủ cửa hàng",
+      "password": "123456",
+      "phone": "0903333444",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+  "vouchers": [
+    {
+      "code": "WELCOME10",
+      "type": "percent",
+      "value": 10,
+      "minOrder": 100000,
+      "desc": "Giảm 10% cho đơn từ 100k",
+      "active": true,
+      "expiresAt": "2026-12-31"
+    },
+    {
+      "code": "DONGQUE30K",
+      "type": "fixed",
+      "value": 30000,
+      "minOrder": 200000,
+      "desc": "Giảm 30,000đ cho đơn từ 200k",
+      "active": true,
+      "expiresAt": "2026-12-31"
+    },
+    {
+      "code": "FREE15",
+      "type": "percent",
+      "value": 15,
+      "minOrder": 300000,
+      "desc": "Giảm 15% cho đơn từ 300k",
+      "active": true,
+      "expiresAt": "2026-12-31"
+    }
+  ],
+  "menu": [
+    {
+      "id": "m1",
+      "name": "Gà nướng mật ong",
+      "category": "ga",
+      "price": 189000,
+      "desc": "Gà ta nướng với mật ong và gia vị bí truyền, da giòn thịt mềm.",
+      "img": "assets/images/ga-nuong.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m2",
+      "name": "Gà chiên giòn đồng quê",
+      "category": "ga",
+      "price": 175000,
+      "desc": "Gà chiên với lớp bột giòn tan, ướp đặc trưng hương đồng quê.",
+      "img": "assets/images/ga-chien-gion.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m3",
+      "name": "Gà hấp lá chanh",
+      "category": "ga",
+      "price": 195000,
+      "desc": "Gà ta hấp lá chanh thơm phức, giữ trọn vị ngọt tự nhiên.",
+      "img": "assets/images/ga-hap-la-chanh.jpg",
+      "available": true,
+      "isNew": true,
+      "sold": 0
+    },
+    {
+      "id": "m4",
+      "name": "Gà luộc mắm gừng",
+      "category": "ga",
+      "price": 165000,
+      "desc": "Gà ta luộc vàng, chấm mắm gừng chuẩn vị miền quê.",
+      "img": "assets/images/ga-luoc-mam-gung.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m14",
+      "name": "Gà rang muối",
+      "category": "ga",
+      "price": 179000,
+      "desc": "Gà rang muối mặn mà, thơm lừng sả tỏi, ăn kèm rau răm.",
+      "img": "assets/images/ga-rang-muoi.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m5",
+      "name": "Cơm gà xối mỡ",
+      "category": "com",
+      "price": 65000,
+      "desc": "Cơm trắng dẻo với gà xối mỡ vàng giòn, rau cải xào.",
+      "img": "assets/images/com-ga-xoi-mo.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m6",
+      "name": "Vịt quay Đồng Quê",
+      "category": "vit",
+      "price": 220000,
+      "desc": "Vịt quay nguyên con với da vàng giòn, thịt đậm đà hương vị.",
+      "img": "assets/images/vit-quay.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m7",
+      "name": "Vịt nấu chao",
+      "category": "vit",
+      "price": 185000,
+      "desc": "Vịt nấu chao béo ngậy, thơm mùi sả gừng đặc trưng miền Nam.",
+      "img": "assets/images/vit-nau-chao.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m8",
+      "name": "Bún vịt nấu tiêu",
+      "category": "vit",
+      "price": 75000,
+      "desc": "Bún tươi với vịt nấu tiêu xanh thơm nồng, cay nhẹ ngon miệng.",
+      "img": "assets/images/bun-vit-nau-tieu.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m15",
+      "name": "Vịt om sả ớt",
+      "category": "vit",
+      "price": 199000,
+      "desc": "Vịt om sả ớt thơm nồng, cay nhẹ, thịt mềm đậm vị.",
+      "img": "assets/images/vit-om-sa-ot.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m9",
+      "name": "Rau muống xào tỏi",
+      "category": "com",
+      "price": 45000,
+      "desc": "Rau muống tươi xào tỏi phi thơm, giòn xanh bắt mắt.",
+      "img": "assets/images/rau-muong-xao-toi.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m10",
+      "name": "Canh chua đồng quê",
+      "category": "com",
+      "price": 55000,
+      "desc": "Canh chua đậm vị với cà chua, thơm, giá đỗ và cá linh.",
+      "img": "assets/images/canh-chua.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m16",
+      "name": "Cơm chiên dương châu",
+      "category": "com",
+      "price": 70000,
+      "desc": "Cơm chiên hạt tơi, trứng và rau củ, thơm vị xì dầu nhẹ.",
+      "img": "assets/images/com-chien-duong-chau.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m11",
+      "name": "Nước chanh muối",
+      "category": "uong",
+      "price": 25000,
+      "desc": "Chanh muối tươi mát, giải nhiệt cực đỉnh ngày hè.",
+      "img": "assets/images/chanh-muoi.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    },
+    {
+      "id": "m13",
+      "name": "Nước mía tươi",
+      "category": "uong",
+      "price": 20000,
+      "desc": "Mía cây ép tươi, ngọt thanh mát lạnh.",
+      "img": "assets/images/nuoc-mia.jpg",
+      "available": true,
+      "isNew": false,
+      "sold": 0
+    }
+  ],
+  "meta": {
+    "orderSeq": 1,
+    "posOrderSeq": 1,
+    "reservationSeq": 1
+  },
+  "orders": [
+    {
+      "id": "POS-0001",
+      "userId": "staff:E00000",
+      "customerName": "Khách tại quán",
+      "customerPhone": "0902222333",
+      "address": "Tại quán",
+      "note": "Đơn POS mẫu thanh toán tiền mặt.",
+      "paymentMethod": "cash",
+      "items": [
+        {
+          "id": "m1",
+          "name": "Gà nướng mật ong",
+          "price": 189000,
+          "qty": 1,
+          "note": ""
+        },
+        {
+          "id": "m11",
+          "name": "Nước chanh muối",
+          "price": 25000,
+          "qty": 2,
+          "note": "Ít đá"
+        }
+      ],
+      "subtotal": 239000,
+      "discount": 0,
+      "total": 239000,
+      "voucherCode": null,
+      "source": "pos",
+      "pointsEarned": 23,
+      "pointsAwarded": false,
+      "pointsAwardedAt": null,
+      "status": "placed",
+      "createdAt": "2026-05-15T03:00:00.000Z"
+    },
+    {
+      "id": "ORD-0001",
+      "userId": "000001",
+      "customerName": "Đỗ Hữu Dũng",
+      "customerPhone": "0997310111",
+      "address": "12 Nguyễn Huệ, Phường Bến Nghé, TP. Hồ Chí Minh",
+      "note": "Giao trong giờ hành chính.",
+      "paymentMethod": "momo",
+      "items": [
+        {
+          "id": "m3",
+          "name": "Gà hấp lá chanh",
+          "price": 195000,
+          "qty": 1,
+          "note": ""
+        },
+        {
+          "id": "m9",
+          "name": "Rau muống xào tỏi",
+          "price": 45000,
+          "qty": 1,
+          "note": ""
+        }
+      ],
+      "subtotal": 240000,
+      "discount": 0,
+      "total": 240000,
+      "voucherCode": null,
+      "source": "order",
+      "pointsEarned": 24,
+      "pointsAwarded": false,
+      "pointsAwardedAt": null,
+      "status": "paid",
+      "createdAt": "2026-05-15T03:10:00.000Z"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "RES-0001",
+      "userId": "000002",
+      "name": "Đặng Quỳnh Hoa",
+      "phone": "0367956539",
+      "type": "ga-nguyen-con",
+      "itemName": "Gà nguyên con",
+      "qty": 1,
+      "price": 350000,
+      "total": 350000,
+      "date": "2026-05-16",
+      "note": "Lấy lúc 17:30, chặt sẵn giúp khách.",
+      "status": "pending",
+      "createdAt": "2026-05-15T03:20:00.000Z"
+    }
+  ]
+}

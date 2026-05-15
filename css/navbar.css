@@ -128,6 +128,9 @@
   background: rgba(255,255,255,0.18);
   transform: scale(1.05);
 }
+.cart-btn .app-icon {
+  filter: brightness(0) invert(1);
+}
 .cart-badge {
   position: absolute;
   top: -4px; right: -4px;
@@ -182,14 +185,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.profile-chevron {
-  font-size: 0.7rem;
-  opacity: 0.6;
-  transition: transform var(--transition-fast);
-}
-.profile-btn.open .profile-chevron {
-  transform: rotate(180deg);
 }
 
 /* Login button (when not logged in) */
@@ -266,19 +261,24 @@
   font-weight: 700;
   color: var(--color-white);
 }
-.dropdown-user-email {
+.dropdown-user-phone {
   font-size: var(--font-size-xs);
   color: var(--color-primary-200);
   margin-top: 2px;
 }
 .dropdown-user-points {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
   margin-top: 4px;
   font-size: var(--font-size-xs);
   color: var(--color-accent-300);
   font-weight: 600;
+}
+.dropdown-user-points .app-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  filter: invert(78%) sepia(74%) saturate(560%) hue-rotate(357deg) brightness(98%) contrast(92%);
 }
 
 .dropdown-menu {
@@ -404,13 +404,27 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.mobile-user-email {
+.mobile-user-phone {
   color: rgba(255,255,255,0.70);
   font-size: var(--font-size-xs);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-top: 2px;
+}
+.mobile-user-points {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255,255,255,0.80);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  margin-top: 4px;
+  white-space: nowrap;
+}
+.mobile-user-points .app-icon {
+  width: 0.95rem;
+  height: 0.95rem;
 }
 .mobile-user-actions {
   display: flex;
@@ -419,6 +433,9 @@
   margin-top: var(--space-4);
 }
 .mobile-user-action {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   width: 100%;
   text-align: left;
   padding: var(--space-3) var(--space-3);
@@ -435,6 +452,9 @@
 }
 .mobile-user-action.mobile-logout {
   color: #fecaca;
+}
+.mobile-nav .app-icon {
+  filter: brightness(0) invert(1);
 }
 
 .mobile-nav-sep {
