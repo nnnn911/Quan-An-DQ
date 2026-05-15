@@ -12,7 +12,7 @@ const STATUS_MAP = {
 
 const PAYMENT_LABELS = {
   cash: 'COD',
-  transfer: 'Đã thanh toán',
+  bank: 'Đã thanh toán',
   momo: 'Đã thanh toán',
   vnpay: 'Đã thanh toán',
 };
@@ -98,7 +98,7 @@ const renderShipperNavbar = () => {
         <span class="hamburger-line"></span>
       </button>
       <a href="shipper.html" class="navbar-logo" aria-label="Quán Ăn Đồng Quê - Shipper">
-        <div class="navbar-logo-icon" aria-hidden="true">🐔</div>
+        <img class="navbar-logo-icon" src="assets/logos/logo-white.svg" alt="" aria-hidden="true">
         <div class="navbar-logo-text">
           <span class="navbar-logo-name">Đồng Quê</span>
           <span class="navbar-logo-tagline">Shipper</span>

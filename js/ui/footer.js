@@ -22,7 +22,7 @@ export const renderFooter = ({ onCategorySelect } = {}) => {
       <div class="footer-grid">
         <div>
           <div class="footer-brand-logo">
-            <div class="footer-brand-icon" aria-hidden="true">🐔</div>
+            <img class="footer-brand-icon" src="assets/logos/logo-white.svg" alt="" aria-hidden="true">
             <div class="navbar-logo-text">
               <span class="navbar-logo-name">Đồng Quê</span>
               <span class="navbar-logo-tagline">Quán Gà & Vịt</span>

@@ -19,7 +19,7 @@ const STATUS_MAP = {
 };
 
 const PAYMENT_LABELS = {
-  cash: `${icon('cash')} Tiền mặt`, transfer: `${icon('bank')} Chuyển khoản`, momo: `${icon('momo')} MoMo`, vnpay: `${icon('vnpay')} VNPay`, preorder: `${icon('reservation')} Đặt trước`
+  cash: `${icon('cash')} Tiền mặt`, bank: `${icon('bank')} Chuyển khoản`, momo: `${icon('momo')} MoMo`, vnpay: `${icon('vnpay')} VNPay`, preorder: `${icon('reservation')} Đặt trước`
 };
 
 const formatDateOnly = (iso) => {

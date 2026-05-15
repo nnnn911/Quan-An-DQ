@@ -26,7 +26,7 @@ export const renderOwnerShell = ({ active = 'dashboard', contentHtml = '' } = {}
       <aside class="staff-sidebar" aria-label="Thanh điều hướng chủ cửa hàng">
         <div class="staff-sidebar-header">
           <div class="staff-brand">
-            <div class="staff-brand-icon" aria-hidden="true">🐔</div>
+            <img class="staff-brand-icon" src="assets/logos/logo-green.svg" alt="" aria-hidden="true">
             <div>
               <div class="staff-brand-title">Đồng Quê</div>
               <div class="staff-brand-sub">Owner Console</div>

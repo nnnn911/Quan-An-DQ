@@ -44,6 +44,42 @@ const getStaticDbSnapshot = () => {
   return source && typeof source === 'object' ? source : {};
 };
 
+const PAYMENT_METHODS = new Set(['cash', 'bank', 'momo', 'vnpay']);
+
+const normalizePaymentMethod = (value) => {
+  const method = (value || 'cash').toString().trim().toLowerCase();
+  if (method === 'transfer') return 'bank';
+  return PAYMENT_METHODS.has(method) ? method : 'cash';
+};
+
+const normalizeDateTimeLocal = (value, fallbackTime = '00:00') => {
+  const raw = (value || '').toString().trim();
+  if (!raw) return '';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return `${raw}T${fallbackTime}`;
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(raw)) return raw;
+  const d = new Date(raw);
+  if (Number.isNaN(d.getTime())) return raw;
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
+
+const normalizeVoucher = (voucher = {}) => ({
+  ...voucher,
+  code: (voucher.code || '').toString().trim().toUpperCase(),
+  type: voucher.type === 'percent' ? 'percent' : 'fixed',
+  value: Number.isFinite(Number(voucher.value)) ? Number(voucher.value) : 0,
+  minOrder: Number.isFinite(Number(voucher.minOrder)) ? Number(voucher.minOrder) : 0,
+  startsAt: normalizeDateTimeLocal(voucher.startsAt, '00:00'),
+  expiresAt: normalizeDateTimeLocal(voucher.expiresAt, '23:59'),
+  desc: (voucher.desc || '').toString(),
+  active: Boolean(voucher.active),
+});
+
+const normalizeOrderRecord = (order = {}) => ({
+  ...order,
+  paymentMethod: normalizePaymentMethod(order.paymentMethod),
+});
+
 const normalizePhone = (phone = '') => phone.toString().trim().replace(/\s+/g, '');
 const isSixDigitId = (id) => /^\d{6}$/.test((id || '').toString());
 const formatUserId = (n) => String(n).padStart(6, '0').slice(-6);
@@ -180,11 +216,11 @@ const mergeStaticSeed = (db = {}) => {
     ...db,
     schemaVersion: DB_SCHEMA_VERSION,
     users: mergeById(seed.users, db.users || []),
-    orders: mergeById(seed.orders, db.orders || []),
+    orders: mergeById(seed.orders, db.orders || []).map(normalizeOrderRecord),
     reservations: mergeById(seed.reservations, db.reservations || []),
     vouchers: db.vouchers === null || db.vouchers === undefined
-      ? seed.vouchers
-      : mergeByKey(seed.vouchers || [], db.vouchers || [], 'code'),
+      ? (seed.vouchers || []).map(normalizeVoucher)
+      : mergeByKey(seed.vouchers || [], db.vouchers || [], 'code').map(normalizeVoucher),
     menu: db.menu === null || db.menu === undefined
       ? seed.menu
       : mergeById(seed.menu || [], db.menu || []),
@@ -440,7 +476,7 @@ export const getOrders = () => {
 
 export const saveOrders = (orders) => {
   const db = ensureDb();
-  saveDb({ ...db, orders: Array.isArray(orders) ? orders : [] });
+  saveDb({ ...db, orders: Array.isArray(orders) ? orders.map(normalizeOrderRecord) : [] });
 };
 
 export const createOrder = (orderData) => {
@@ -492,6 +528,7 @@ export const createOrder = (orderData) => {
     id,
     ...orderData,
     source: orderData.source || 'order',
+    paymentMethod: normalizePaymentMethod(orderData.paymentMethod),
     pointsEarned: calculateOrderPoints(orderData),
     pointsAwarded: false,
     pointsAwardedAt: null,
@@ -513,12 +550,12 @@ export const getOrderById = (id) =>
 /* ---- Vouchers ---- */
 export const getVouchers = () => {
   const db = ensureDb();
-  return mergeByKey(getStaticArray('vouchers'), db.vouchers || [], 'code');
+  return mergeByKey(getStaticArray('vouchers').map(normalizeVoucher), db.vouchers || [], 'code').map(normalizeVoucher);
 };
 
 export const saveVouchers = (vouchers) => {
   const db = ensureDb();
-  saveDb({ ...db, vouchers: Array.isArray(vouchers) ? vouchers : [] });
+  saveDb({ ...db, vouchers: Array.isArray(vouchers) ? vouchers.map(normalizeVoucher) : [] });
 };
 
 export const validateVoucher = (code, orderTotal) => {
@@ -526,6 +563,11 @@ export const validateVoucher = (code, orderTotal) => {
   const v = vouchers.find(v => v.code === code.toUpperCase());
   if (!v) return { ok: false, msg: 'Mã voucher không tồn tại.' };
   if (!v.active) return { ok: false, msg: 'Mã voucher đã hết hạn.' };
+  const now = new Date();
+  const startsAt = v.startsAt ? new Date(v.startsAt) : null;
+  const expiresAt = v.expiresAt ? new Date(v.expiresAt) : null;
+  if (startsAt && !Number.isNaN(startsAt.getTime()) && now < startsAt) return { ok: false, msg: 'Mã voucher chưa đến thời gian sử dụng.' };
+  if (expiresAt && !Number.isNaN(expiresAt.getTime()) && now > expiresAt) return { ok: false, msg: 'Mã voucher đã hết hạn.' };
   if (orderTotal < v.minOrder) return { ok: false, msg: `Đơn hàng tối thiểu ${formatPrice(v.minOrder)} để dùng mã này.` };
   const discount = v.type === 'percent'
     ? Math.round(orderTotal * v.value / 100)
@@ -610,7 +652,6 @@ const MENU_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 const normalizeMenuCategory = (cat) => {
   const raw = (cat || '').toString().trim().toLowerCase();
   if (!raw) return 'com';
-  if (raw === 'cung') return 'cung';
   if (['ga', 'gà', 'chicken'].includes(raw)) return 'ga';
   if (['vit', 'vịt', 'duck'].includes(raw)) return 'vit';
   if (['com', 'cơm', 'rice', 'phu', 'món phụ', 'mon phu', 'side'].includes(raw)) return 'com';
@@ -641,7 +682,7 @@ const isMissingMenuImage = (img) => {
 };
 
 const normalizeMenuItem = (item, defaultItem = null) => {
-  const { badge, available, ...itemWithoutLegacyFlags } = item || {};
+  const { badge, available, isNew, ...itemWithoutLegacyFlags } = item || {};
   delete itemWithoutLegacyFlags['is' + 'New'];
   const normalizedCategory = normalizeMenuCategory(item.category);
   const fixedCategory = ALLOWED_MENU_CATEGORIES.has(normalizedCategory) ? normalizedCategory : 'com';
@@ -659,7 +700,7 @@ const normalizeMenuItem = (item, defaultItem = null) => {
 
   return {
     ...itemWithoutLegacyFlags,
-    category: normalizedCategory === 'cung' ? 'cung' : fixedCategory,
+    category: fixedCategory,
     desc: (item.desc || '').toString(),
     img: image,
     status,
@@ -679,8 +720,7 @@ export const getMenu = () => {
   const merged = mergeById(defaults, storedArr || []);
 
   const normalized = merged
-    .map((item) => normalizeMenuItem(item, defaultById.get(item.id)))
-    .filter(i => i.category !== 'cung');
+    .map((item) => normalizeMenuItem(item, defaultById.get(item.id)));
 
   const shouldSave = storedArr && storedArr.length !== normalized.length;
   if (shouldSave) saveDb({ ...db, menu: normalized });
@@ -689,15 +729,17 @@ export const getMenu = () => {
     const anyNeedsFix = storedArr.some((it) => {
       const rawCat = (it.category || '').toString().trim().toLowerCase();
       const cat = normalizeMenuCategory(it.category);
-      const fixedCat = cat !== 'cung' && ALLOWED_MENU_CATEGORIES.has(cat);
-      const categoryNeedsFix = cat !== 'cung' && rawCat !== cat;
+      const fixedCat = ALLOWED_MENU_CATEGORIES.has(cat);
+      const categoryNeedsFix = rawCat !== cat;
       const hasSold = Number.isFinite(Number(it.sold));
       const defaultImage = defaultById.get(it.id)?.img;
       const replacementImage = !isMissingMenuImage(defaultImage) ? defaultImage : inferMenuImagePath(it);
       const missingImage = isMissingMenuImage(it.img) && !!replacementImage;
       const hasLegacyBadge = Object.prototype.hasOwnProperty.call(it, 'badge');
       const hasStatus = ['available', 'soldout', 'hidden'].includes((it.status || '').toString());
-      return (!fixedCat && cat !== 'cung') || categoryNeedsFix || !hasSold || typeof it.desc !== 'string' || missingImage || hasLegacyBadge || !hasStatus;
+      const hasLegacyIsNew = Object.prototype.hasOwnProperty.call(it, 'isNew');
+      const hasLegacyAvailable = Object.prototype.hasOwnProperty.call(it, 'available');
+      return !fixedCat || categoryNeedsFix || !hasSold || typeof it.desc !== 'string' || missingImage || hasLegacyBadge || hasLegacyIsNew || hasLegacyAvailable || !hasStatus;
     });
     if (anyNeedsFix) saveDb({ ...db, menu: normalized });
   }
@@ -706,7 +748,7 @@ export const getMenu = () => {
 };
 export const saveMenu = (menu) => {
   const db = ensureDb();
-  saveDb({ ...db, menu: Array.isArray(menu) ? menu : [] });
+  saveDb({ ...db, menu: Array.isArray(menu) ? menu.map((item) => normalizeMenuItem(item)).filter((item) => ALLOWED_MENU_CATEGORIES.has(item.category)) : [] });
 };
 
 export const incrementMenuSoldCounts = (orderItems = []) => {

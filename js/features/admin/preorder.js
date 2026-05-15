@@ -40,7 +40,7 @@ const TABS = [
   { id: 'all', label: 'Tất cả' },
 ];
 
-let tabId = 'all';
+let tabId = 'need';
 let searchQuery = '';
 let selectedResId = null;
 
@@ -284,6 +284,33 @@ const renderSelectedReservationDetail = () => {
   });
 };
 
+const renderReservationList = (listEl, rows) => {
+  if (!listEl) return;
+
+  if (!rows.length) {
+    listEl.innerHTML = `
+      <div class="empty-state" style="padding:var(--space-10) 0">
+        <div class="empty-state-icon">${icon('reservation', 'Đơn đặt trước')}</div>
+        <h3>Không có đơn đặt trước</h3>
+        <p>${searchQuery ? 'Không tìm thấy đơn phù hợp.' : 'Chưa có yêu cầu đặt trước nào.'}</p>
+      </div>
+    `;
+  } else {
+    listEl.innerHTML = `<div class="staff-list">${rows.map(renderListItem).join('')}</div>`;
+    listEl.querySelectorAll('[data-select]')?.forEach((el) => {
+      el.addEventListener('click', () => {
+        selectedResId = el.dataset.select;
+        listEl.querySelectorAll('[data-select]').forEach((item) => {
+          item.classList.toggle('active', item.dataset.select === selectedResId);
+        });
+        renderSelectedReservationDetail();
+      });
+    });
+  }
+
+  renderSelectedReservationDetail();
+};
+
 const renderPage = () => {
   const all = getSortedReservations();
   const filtered = filterReservations(all);
@@ -328,32 +355,7 @@ const renderPage = () => {
   bindStaffChrome({ onLogout: doLogout });
 
   const listEl = document.getElementById('res-list');
-
-  if (!filtered.length) {
-    listEl.innerHTML = `
-      <div class="empty-state" style="padding:var(--space-10) 0">
-        <div class="empty-state-icon">${icon('reservation', 'Đơn đặt trước')}</div>
-        <h3>Không có đơn đặt trước</h3>
-        <p>${searchQuery ? 'Không tìm thấy đơn phù hợp.' : 'Chưa có yêu cầu đặt trước nào.'}</p>
-        <div style="margin-top:var(--space-5)">
-          <a class="btn btn-primary" href="preorder.html">➕ Tạo đơn đặt trước (khách)</a>
-        </div>
-      </div>
-    `;
-  } else {
-    listEl.innerHTML = `<div class="staff-list">${filtered.map(renderListItem).join('')}</div>`;
-    listEl.querySelectorAll('[data-select]')?.forEach((el) => {
-      el.addEventListener('click', () => {
-        selectedResId = el.dataset.select;
-        listEl.querySelectorAll('[data-select]').forEach((item) => {
-          item.classList.toggle('active', item.dataset.select === selectedResId);
-        });
-        renderSelectedReservationDetail();
-      });
-    });
-  }
-
-  renderSelectedReservationDetail();
+  renderReservationList(listEl, filtered);
 
   document.querySelectorAll('[data-tab]')?.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -364,7 +366,9 @@ const renderPage = () => {
 
   document.getElementById('res-search')?.addEventListener('input', (e) => {
     searchQuery = e.target.value;
-    renderPage();
+    const nextFiltered = filterReservations(all);
+    ensureSelected(all, nextFiltered);
+    renderReservationList(listEl, nextFiltered);
   });
 };
 

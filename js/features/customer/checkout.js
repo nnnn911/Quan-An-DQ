@@ -43,6 +43,8 @@ const HCMC_WARDS = [
   'Phường Cát Lái',
 ];
 
+const normalizePaymentMethod = (method) => method === 'transfer' ? 'bank' : method;
+
 const mergeCheckoutDraft = (patch) => {
   const current = getCheckoutDraft() || {};
   return setCheckoutDraft({ ...current, ...patch });
@@ -55,7 +57,7 @@ const readCheckoutFormDraft = () => ({
   ward: document.getElementById('co-ward')?.value || '',
   addressDetail: document.getElementById('co-address-detail')?.value || '',
   note: document.getElementById('co-note')?.value || '',
-  paymentMethod: document.querySelector('#checkout-page input[name=payment]:checked')?.value || 'cash',
+  paymentMethod: normalizePaymentMethod(document.querySelector('#checkout-page input[name=payment]:checked')?.value || 'cash'),
 });
 
 const persistCheckoutFormDraft = () => {
@@ -109,7 +111,7 @@ export const renderCheckoutPage = () => {
   const customerWard = draft.ward || '';
   const customerAddressDetail = draft.addressDetail ?? '';
   const customerNote = draft.note ?? '';
-  const paymentMethod = draft.paymentMethod || 'cash';
+  const paymentMethod = normalizePaymentMethod(draft.paymentMethod || 'cash');
 
   const section = document.createElement('section');
   section.id = 'checkout-page';
@@ -230,7 +232,7 @@ export const renderCheckoutPage = () => {
               <div class="payment-methods" role="radiogroup" aria-label="Phương thức thanh toán">
                 ${[
                   { id: 'cash', icon: 'cash', name: 'Tiền mặt' },
-                  { id: 'transfer', icon: 'bank', name: 'Chuyển khoản' },
+                  { id: 'bank', icon: 'bank', name: 'Chuyển khoản' },
                   { id: 'momo', icon: 'momo', name: 'MoMo' },
                   { id: 'vnpay', icon: 'vnpay', name: 'VNPay' },
                 ].map((m) => `

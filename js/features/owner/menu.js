@@ -28,6 +28,7 @@ let voucherSelectedCode = null;
 let customerSelectedId = null;
 let searchQuery = '';
 let menuStatusFilter = 'all';
+let menuCategoryFilter = 'all';
 let menuSort = 'name-asc';
 let menuSheetPage = 1;
 let voucherFilter = 'all';
@@ -46,7 +47,8 @@ export const renderMenuPage = () => {
     .filter((m) => {
       const status = getMenuStatus(m);
       const matchesStatus = menuStatusFilter === 'all' || status === menuStatusFilter;
-      return matchesStatus && `${m.id} ${m.name} ${m.category} ${m.price} ${getMenuStatus(m)} ${m.sold}`.toLowerCase().includes(q);
+      const matchesCategory = menuCategoryFilter === 'all' || m.category === menuCategoryFilter;
+      return matchesStatus && matchesCategory && `${m.id} ${m.name} ${m.category} ${m.price} ${getMenuStatus(m)} ${m.sold}`.toLowerCase().includes(q);
     })
     .sort((a, b) => {
       const { key, dir } = getSortState(menuSort, 'name');
@@ -69,6 +71,10 @@ export const renderMenuPage = () => {
               <span class="search-icon" aria-hidden="true">${icon('search')}</span>
               <input type="search" id="owner-search" placeholder="Tìm món..." value="${escapeAttr(searchQuery)}">
             </div>
+            <select class="form-control" id="menu-category-filter" aria-label="Lọc nhóm món">
+              <option value="all"${menuCategoryFilter === 'all' ? ' selected' : ''}>Mọi nhóm món</option>
+              ${Object.entries(CATEGORY_LABELS).map(([value, label]) => `<option value="${value}"${menuCategoryFilter === value ? ' selected' : ''}>${label}</option>`).join('')}
+            </select>
             <select class="form-control" id="menu-status-filter" aria-label="Lọc trạng thái">
               <option value="all"${menuStatusFilter === 'all' ? ' selected' : ''}>Mọi trạng thái</option>
               <option value="available"${menuStatusFilter === 'available' ? ' selected' : ''}>Đang bán</option>
@@ -239,6 +245,11 @@ export const bindMenuPage = () => {
   });
   document.getElementById('menu-status-filter')?.addEventListener('change', (e) => {
     menuStatusFilter = e.target.value;
+    menuSheetPage = 1;
+    rerenderOwnerPage();
+  });
+  document.getElementById('menu-category-filter')?.addEventListener('change', (e) => {
+    menuCategoryFilter = e.target.value;
     menuSheetPage = 1;
     rerenderOwnerPage();
   });

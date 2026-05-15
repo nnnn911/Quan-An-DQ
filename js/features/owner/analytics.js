@@ -5,6 +5,7 @@ import {
   openOwnerDrawer,
   parseDate,
   getSortState,
+  getPagedRows,
   nextSort,
   sheetSortButton,
   ownerPaginationTableFooterHtml,
@@ -24,10 +25,13 @@ let analyticsCustomStart = '';
 let analyticsCustomEnd = '';
 let reportTab = 'revenue';
 let reportGroupBy = 'day';
+let recentOrderSort = 'createdAt-desc';
 let revenueSort = 'date-desc';
+let revenueSheetPage = 1;
 let menuItemSort = 'qty-desc';
 let menuItemSearch = '';
 let menuCategoryFilter = 'all';
+let menuItemSheetPage = 1;
 let orderSheetSearch = '';
 let orderStatusFilter = 'all';
 let orderTypeFilter = 'all';
@@ -36,7 +40,9 @@ let orderSheetSort = 'createdAt-desc';
 let orderSheetPage = 1;
 let analyticsFirstPaint = true;
 let analyticsCustomMenuOpen = false;
+let reportScrollRenderTimer = null;
 const ORDER_PAGE_SIZE = 10;
+const REPORT_SHEET_PAGE_SIZE = 20;
 
 const ORDER_STATUS = {
   pending: { label: 'Chờ xác nhận', className: 'badge-warning' },
@@ -84,6 +90,40 @@ const shortDate = (value) => {
   return d ? d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' }) : '—';
 };
 
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const startOfBucket = (date, mode = 'day') => {
+  const d = new Date(date);
+  if (mode === 'hour') {
+    d.setMinutes(0, 0, 0);
+    return d;
+  }
+  d.setHours(0, 0, 0, 0);
+  if (mode === 'week') {
+    const day = (d.getDay() + 6) % 7;
+    d.setDate(d.getDate() - day);
+  } else if (mode === 'month') {
+    d.setDate(1);
+  }
+  return d;
+};
+
+const chartDateLabel = (date, mode = 'day') => {
+  const d = parseDate(date);
+  if (!d) return '—';
+  if (mode === 'hour') return `${pad2(d.getHours())}:00, ${d.toLocaleDateString('vi-VN')}`;
+  if (mode === 'month') return d.toLocaleDateString('vi-VN', { month: '2-digit', year: 'numeric' });
+  return d.toLocaleDateString('vi-VN');
+};
+
+const chartAxisDateLabel = (date, mode = 'day') => {
+  const d = parseDate(date);
+  if (!d) return '—';
+  if (mode === 'hour') return `${pad2(d.getHours())}:00`;
+  if (mode === 'month') return d.toLocaleDateString('vi-VN', { month: '2-digit', year: '2-digit' });
+  return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+};
+
 const formatReservationDate = (value) => {
   const d = parseDate(value);
   return d ? d.toLocaleDateString('vi-VN') : value || '—';
@@ -127,6 +167,32 @@ const getStatusMeta = (status) => ORDER_STATUS[(status || '').toString()] || { l
 const statusBadge = (status) => {
   const meta = getStatusMeta(status);
   return `<span class="badge ${meta.className}">${escapeHtml(meta.label)}</span>`;
+};
+
+const compareText = (a, b) => (a || '').toString().localeCompare((b || '').toString(), 'vi', { numeric: true });
+
+const getContributionPercent = (revenue, totalRevenue) => totalRevenue ? Math.round((revenue / totalRevenue) * 100) : 0;
+
+const resetReportSheetPages = () => {
+  revenueSheetPage = 1;
+  menuItemSheetPage = 1;
+};
+
+const rerenderReportsPreservingScroll = () => {
+  const x = window.scrollX;
+  const y = window.scrollY;
+  rerenderOwnerPage();
+  requestAnimationFrame(() => window.scrollTo(x, y));
+};
+
+const scheduleReportsRenderPreservingScroll = () => {
+  const x = window.scrollX;
+  const y = window.scrollY;
+  window.clearTimeout(reportScrollRenderTimer);
+  reportScrollRenderTimer = window.setTimeout(() => {
+    rerenderOwnerPage();
+    requestAnimationFrame(() => window.scrollTo(x, y));
+  }, 180);
 };
 
 const normalizeOrder = (order = {}) => {
@@ -332,9 +398,10 @@ export const renderAnalyticsSkeletonPage = (showFilter = false) => `
 const aggregateBy = (orders, mode) => {
   const map = new Map();
   orders.forEach((order) => {
-    const d = order.createdAt;
-    const key = mode === 'hour' ? `${pad2(d.getHours())}:00` : mode === 'week' ? weekKey(d) : mode === 'month' ? monthKey(d) : dayKey(d);
-    const row = map.get(key) || { label: key, orders: 0, itemQty: 0, revenue: 0, date: d };
+    const d = startOfBucket(order.createdAt, mode);
+    const key = mode === 'hour' ? `${dayKey(d)} ${pad2(d.getHours())}:00` : mode === 'week' ? weekKey(d) : mode === 'month' ? monthKey(d) : dayKey(d);
+    const label = mode === 'hour' ? `${pad2(d.getHours())}:00` : key;
+    const row = map.get(key) || { label, orders: 0, itemQty: 0, revenue: 0, date: d };
     row.orders += 1;
     row.itemQty += order.itemQty;
     row.revenue += order.total;
@@ -343,39 +410,123 @@ const aggregateBy = (orders, mode) => {
   return [...map.values()].sort((a, b) => a.date - b.date);
 };
 
-const lineChartHtml = (rows, valueKey = 'revenue', { showLegend = true, showAxes = false } = {}) => {
+const completeChartRows = (rows, mode, range) => {
+  if (!range || !['hour', 'day'].includes(mode)) return rows;
+  const start = startOfBucket(range.start, mode);
+  const end = startOfBucket(range.end, mode);
+  const stepMs = mode === 'hour' ? 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
+  const bucketCount = Math.floor((end - start) / stepMs) + 1;
+  if (bucketCount < 1 || bucketCount > 370) return rows;
+  const byTime = new Map(rows.map((row) => [startOfBucket(row.date, mode).getTime(), row]));
+  return Array.from({ length: bucketCount }, (_, idx) => {
+    const date = new Date(start.getTime() + idx * stepMs);
+    const key = date.getTime();
+    return byTime.get(key) || {
+      label: mode === 'hour' ? `${pad2(date.getHours())}:00` : dayKey(date),
+      orders: 0,
+      itemQty: 0,
+      revenue: 0,
+      date,
+    };
+  });
+};
+
+const getChartDomain = (rows, mode, range) => {
+  if (range && range.start && range.end && range.start.getFullYear() > 1970) {
+    return {
+      start: startOfBucket(range.start, mode),
+      end: startOfBucket(range.end, mode),
+    };
+  }
+  const dates = rows.map((row) => startOfBucket(row.date, mode).getTime()).filter(Number.isFinite);
+  const min = Math.min(...dates);
+  const max = Math.max(...dates);
+  return {
+    start: new Date(min),
+    end: new Date(max),
+  };
+};
+
+const chartXAxisTicks = (domain, mode) => {
+  const start = domain.start.getTime();
+  const end = domain.end.getTime();
+  const span = Math.max(end - start, 0);
+  const dayMs = 24 * 60 * 60 * 1000;
+  const daySpan = mode === 'hour' ? 0 : Math.round(span / dayMs) + 1;
+  if (mode === 'hour') {
+    const count = 7;
+    return Array.from({ length: count }, (_, idx) => {
+      const time = start + (span * idx) / (count - 1 || 1);
+      const d = startOfBucket(new Date(time), 'hour');
+      return { date: d, label: chartAxisDateLabel(d, mode) };
+    });
+  }
+  if (daySpan > 7) {
+    return Array.from({ length: 7 }, (_, idx) => {
+      const offsetDays = Math.round(((daySpan - 1) * idx) / 6);
+      const d = new Date(start + offsetDays * dayMs);
+      return { date: d, label: chartAxisDateLabel(d, mode) };
+    });
+  }
+  return Array.from({ length: Math.max(daySpan, 1) }, (_, idx) => {
+    const d = new Date(start + idx * dayMs);
+    return { date: d, label: chartAxisDateLabel(d, mode) };
+  });
+};
+
+const lineChartHtml = (rows, valueKey = 'revenue', { showLegend = true, showAxes = false, mode = 'day', range = null } = {}) => {
   const width = 720;
   const height = 240;
-  const pad = showAxes ? 48 : 34;
+  const padLeft = showAxes ? 22 : 20;
+  const padRight = 18;
+  const padTop = 16;
+  const padBottom = showAxes ? 34 : 20;
   if (!rows.length) return `<div class="owner-chart-empty empty-state"><h3>Chưa có dữ liệu</h3><p>Thử chọn khoảng thời gian khác.</p></div>`;
-  const max = Math.max(...rows.map((r) => Number(r[valueKey] || 0)), 1);
-  const ticks = [0, 0.5, 1].map((ratio) => ({
-    value: Math.round(max * ratio),
-    y: height - pad - ratio * (height - pad * 2),
+  const chartRows = completeChartRows(rows, mode, range);
+  const domain = getChartDomain(chartRows, mode, range);
+  const domainStart = domain.start.getTime();
+  const domainEnd = domain.end.getTime();
+  const domainSpan = Math.max(domainEnd - domainStart, 1);
+  const max = Math.max(...chartRows.map((r) => Number(r[valueKey] || 0)), 1);
+  const plotWidth = width - padLeft - padRight;
+  const plotHeight = height - padTop - padBottom;
+  const xForDate = (date) => padLeft + ((startOfBucket(date, mode).getTime() - domainStart) / domainSpan) * plotWidth;
+  const xTicks = chartXAxisTicks(domain, mode).map((tick) => ({
+    ...tick,
+    x: xForDate(tick.date),
   }));
-  const points = rows.map((r, idx) => {
-    const x = pad + (rows.length === 1 ? 0 : idx * ((width - pad * 2) / (rows.length - 1)));
-    const y = height - pad - (Number(r[valueKey] || 0) / max) * (height - pad * 2);
-    return { ...r, x, y };
+  const points = chartRows.map((r) => {
+    const x = clamp(xForDate(r.date), padLeft, width - padRight);
+    const y = height - padBottom - (Number(r[valueKey] || 0) / max) * plotHeight;
+    const value = Number(r[valueKey] || 0);
+    const displayValue = valueKey === 'revenue' ? formatPrice(value) : value.toLocaleString('vi-VN');
+    const tooltipWidth = 164;
+    const tooltipHeight = 50;
+    const tooltipX = clamp(x - tooltipWidth / 2, padLeft, width - padRight - tooltipWidth);
+    const tooltipY = y > padTop + tooltipHeight + 16 ? y - tooltipHeight - 14 : y + 16;
+    return { ...r, x, y, displayValue, tooltipX, tooltipY, tooltipWidth, tooltipHeight };
   });
   return `
     <div class="owner-chart owner-line-chart">
       <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Biểu đồ doanh thu theo thời gian">
         ${showAxes ? `
-          <line class="owner-axis" x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}"></line>
-          <line class="owner-axis" x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}"></line>
-          ${ticks.map((tick) => `
-            <line class="owner-axis-grid" x1="${pad}" y1="${tick.y}" x2="${width - pad}" y2="${tick.y}"></line>
-            <text class="owner-axis-label" x="${pad - 8}" y="${tick.y + 4}" text-anchor="end">${escapeHtml(tick.value >= 1000000 ? `${Math.round(tick.value / 1000000)}tr` : `${Math.round(tick.value / 1000)}k`)}</text>
+          <line class="owner-axis" x1="${padLeft}" y1="${height - padBottom}" x2="${width - padRight}" y2="${height - padBottom}"></line>
+          ${xTicks.map((tick) => `
+            <line class="owner-axis-tick" x1="${tick.x}" y1="${height - padBottom}" x2="${tick.x}" y2="${height - padBottom + 5}"></line>
+            <text class="owner-axis-label owner-axis-label-x" x="${tick.x}" y="${height - 14}" text-anchor="middle">${escapeHtml(tick.label)}</text>
           `).join('')}
         ` : ''}
         <polyline points="${points.map((p) => `${p.x},${p.y}`).join(' ')}" fill="none" stroke="var(--color-primary-600)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
         ${points.map((p) => `
-          <g>
-            <circle cx="${p.x}" cy="${p.y}" r="5" fill="var(--color-primary-700)">
-              <title>${escapeHtml(p.label)}: ${formatPrice(Number(p[valueKey] || 0))}</title>
-            </circle>
-            <text x="${p.x}" y="${height - 8}" text-anchor="middle">${escapeHtml(p.label.length > 8 ? p.label.slice(5) : p.label)}</text>
+          <g class="owner-chart-point" tabindex="0" aria-label="${escapeAttr(`${chartDateLabel(p.date, mode)}: ${p.displayValue}`)}">
+            <line class="owner-chart-hover-line" x1="${p.x}" y1="${padTop}" x2="${p.x}" y2="${height - padBottom}"></line>
+            <circle class="owner-chart-hit" cx="${p.x}" cy="${p.y}" r="16"></circle>
+            <circle class="owner-chart-dot" cx="${p.x}" cy="${p.y}" r="5"></circle>
+            <g class="owner-chart-tooltip" transform="translate(${p.tooltipX} ${p.tooltipY})">
+              <rect width="${p.tooltipWidth}" height="${p.tooltipHeight}" rx="7"></rect>
+              <text class="owner-chart-tooltip-date" x="12" y="19">${escapeHtml(chartDateLabel(p.date, mode))}</text>
+              <text class="owner-chart-tooltip-value" x="12" y="38">${escapeHtml(p.displayValue)}</text>
+            </g>
           </g>
         `).join('')}
       </svg>
@@ -509,12 +660,22 @@ const openOrderDetailDrawer = (id) => {
 
 export const renderDashboardPage = () => {
   if (analyticsRange === 'all') analyticsRange = '7d';
+  const range = getDateRange();
   const orders = getAnalyticsOrders();
   const revenueOrders = getRevenueRecords(orders);
   const summary = getAnalyticsSummary(revenueOrders);
-  const chartRows = aggregateBy(revenueOrders, analyticsRange === 'today' ? 'hour' : 'day');
+  const chartMode = analyticsRange === 'today' ? 'hour' : 'day';
+  const chartRows = aggregateBy(revenueOrders, chartMode);
   const topItems = getOrderItems(revenueOrders).sort((a, b) => b.qty - a.qty).slice(0, 5);
-  const recent = orders.slice(0, 8);
+  const recent = [...orders].sort((a, b) => {
+    const { key, dir } = getSortState(recentOrderSort, 'createdAt');
+    const direction = dir === 'desc' ? -1 : 1;
+    if (key === 'id') return compareText(a.id, b.id) * direction;
+    if (key === 'customerName') return compareText(a.customerName || 'Khách hàng', b.customerName || 'Khách hàng') * direction;
+    if (key === 'total') return (a.total - b.total) * direction;
+    if (key === 'status') return compareText(getStatusMeta(a.status).label, getStatusMeta(b.status).label) * direction;
+    return (a.createdAt - b.createdAt) * direction;
+  }).slice(0, 8);
   return `
     <div class="owner-page owner-analytics-page">
       <div class="owner-toolbar owner-toolbar--filter-only">
@@ -530,7 +691,7 @@ export const renderDashboardPage = () => {
       <div class="owner-analytics-grid owner-dashboard-grid">
         <section class="staff-panel owner-chart-panel">
           <div class="staff-panel-header"><div class="staff-panel-title">Doanh thu ngắn hạn</div></div>
-          <div class="staff-panel-body">${lineChartHtml(chartRows, 'revenue', { showLegend: false, showAxes: true })}</div>
+          <div class="staff-panel-body">${lineChartHtml(chartRows, 'revenue', { showLegend: false, showAxes: true, mode: chartMode, range })}</div>
         </section>
         <section class="staff-panel owner-chart-panel">
           <div class="staff-panel-header"><div class="staff-panel-title">Top 5 món bán chạy</div></div>
@@ -541,7 +702,7 @@ export const renderDashboardPage = () => {
           <div class="staff-panel-body owner-sheet-body">
             <div class="owner-table-wrap">
               <table class="owner-table owner-spreadsheet">
-                <thead><tr><th>Mã đơn</th><th>Thời gian</th><th>Khách hàng</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead>
+                <thead><tr><th>${sheetSortButton('data-recent-order-sort', recentOrderSort, 'id', 'Mã đơn')}</th><th>${sheetSortButton('data-recent-order-sort', recentOrderSort, 'createdAt', 'Thời gian')}</th><th>${sheetSortButton('data-recent-order-sort', recentOrderSort, 'customerName', 'Khách hàng')}</th><th>${sheetSortButton('data-recent-order-sort', recentOrderSort, 'total', 'Tổng tiền')}</th><th>${sheetSortButton('data-recent-order-sort', recentOrderSort, 'status', 'Trạng thái')}</th></tr></thead>
                 <tbody>
                   ${recent.map((order) => `<tr data-order-detail="${escapeAttr(order.id)}"><td>${escapeHtml(order.id)}</td><td>${escapeHtml(formatDateTimeValue(order.createdAt))}</td><td>${escapeHtml(order.customerName || 'Khách hàng')}</td><td>${formatPrice(order.total)}</td><td>${statusBadge(order.status)}</td></tr>`).join('') || `<tr><td colspan="5"><div class="empty-state"><h3>Chưa có đơn hàng</h3><p>Khi có đơn mới, danh sách sẽ xuất hiện tại đây.</p></div></td></tr>`}
                 </tbody>
@@ -558,6 +719,7 @@ const revenueSummaryRows = (orders) => aggregateBy(orders, reportGroupBy);
 
 const renderRevenueTab = (orders, summary) => {
   const rows = revenueSummaryRows(orders);
+  const range = getDateRange();
   const best = [...rows].sort((a, b) => b.revenue - a.revenue)[0];
   const typeRows = Object.entries(ORDER_TYPE_LABELS).map(([type, label]) => ({
     label,
@@ -568,8 +730,12 @@ const renderRevenueTab = (orders, summary) => {
     const direction = dir === 'desc' ? -1 : 1;
     if (key === 'revenue') return (a.revenue - b.revenue) * direction;
     if (key === 'orders') return (a.orders - b.orders) * direction;
+    if (key === 'itemQty') return (a.itemQty - b.itemQty) * direction;
+    if (key === 'avgOrder') return ((a.orders ? a.revenue / a.orders : 0) - (b.orders ? b.revenue / b.orders : 0)) * direction;
     return a.label.localeCompare(b.label, 'vi') * direction;
   });
+  const pagedRows = getPagedRows(sortedRows, revenueSheetPage, REPORT_SHEET_PAGE_SIZE);
+  revenueSheetPage = pagedRows.page;
   return `
     ${metricCardsHtml([
       { label: 'Tổng doanh thu', value: formatPrice(summary.revenue) },
@@ -578,9 +744,9 @@ const renderRevenueTab = (orders, summary) => {
       { label: 'Ngày cao nhất', value: escapeHtml(best?.label || '—'), note: best ? formatPrice(best.revenue) : 'Chưa có dữ liệu' },
     ])}
     <div class="owner-analytics-grid owner-revenue-grid">
-      <section class="staff-panel"><div class="staff-panel-header"><div class="staff-panel-title">Doanh thu theo thời gian</div></div><div class="staff-panel-body">${lineChartHtml(rows, 'revenue', { showLegend: false, showAxes: true })}</div></section>
+      <section class="staff-panel"><div class="staff-panel-header"><div class="staff-panel-title">Doanh thu theo thời gian</div></div><div class="staff-panel-body">${lineChartHtml(rows, 'revenue', { showLegend: false, showAxes: true, mode: reportGroupBy, range })}</div></section>
       <section class="staff-panel"><div class="staff-panel-header"><div class="staff-panel-title">Doanh thu theo loại đơn</div></div><div class="staff-panel-body">${donutChartHtml(typeRows)}</div></section>
-      <section class="staff-panel owner-revenue-summary-panel"><div class="staff-panel-header"><div class="staff-panel-title">Tóm tắt doanh thu</div></div><div class="staff-panel-body owner-sheet-body"><div class="owner-table-wrap"><table class="owner-table owner-spreadsheet"><thead><tr><th>${sheetSortButton('data-revenue-sort', revenueSort, 'date', 'Ngày')}</th><th>${sheetSortButton('data-revenue-sort', revenueSort, 'orders', 'Số đơn')}</th><th>Số món</th><th>${sheetSortButton('data-revenue-sort', revenueSort, 'revenue', 'Doanh thu')}</th><th>TB/đơn</th></tr></thead><tbody>${sortedRows.map((row) => `<tr><td>${escapeHtml(row.label)}</td><td>${row.orders}</td><td>${row.itemQty}</td><td>${formatPrice(row.revenue)}</td><td>${formatPrice(row.orders ? Math.round(row.revenue / row.orders) : 0)}</td></tr>`).join('') || `<tr><td colspan="5"><div class="empty-state"><h3>Chưa có dữ liệu</h3></div></td></tr>`}</tbody></table></div></div></section>
+      <section class="staff-panel owner-revenue-summary-panel"><div class="staff-panel-header"><div class="staff-panel-title">Tóm tắt doanh thu</div></div><div class="staff-panel-body owner-sheet-body"><div class="owner-table-wrap"><table class="owner-table owner-spreadsheet"><thead><tr><th>${sheetSortButton('data-revenue-sort', revenueSort, 'date', 'Ngày')}</th><th>${sheetSortButton('data-revenue-sort', revenueSort, 'orders', 'Số đơn')}</th><th>${sheetSortButton('data-revenue-sort', revenueSort, 'itemQty', 'Số món')}</th><th>${sheetSortButton('data-revenue-sort', revenueSort, 'revenue', 'Doanh thu')}</th><th>${sheetSortButton('data-revenue-sort', revenueSort, 'avgOrder', 'TB/đơn')}</th></tr></thead><tbody>${pagedRows.rows.map((row) => `<tr><td>${escapeHtml(row.label)}</td><td>${row.orders}</td><td>${row.itemQty}</td><td>${formatPrice(row.revenue)}</td><td>${formatPrice(row.orders ? Math.round(row.revenue / row.orders) : 0)}</td></tr>`).join('') || `<tr><td colspan="5"><div class="empty-state"><h3>Chưa có dữ liệu</h3></div></td></tr>`}</tbody>${ownerPaginationTableFooterHtml({ total: sortedRows.length, page: revenueSheetPage, pageCount: pagedRows.pageCount, label: 'dòng', prevId: 'revenue-prev', nextId: 'revenue-next', colspan: 5 })}</table></div></div></section>
     </div>
   `;
 };
@@ -600,8 +766,13 @@ const renderMenuStatsTab = (orders, summary) => {
       const { key, dir } = getSortState(menuItemSort, 'qty');
       const direction = dir === 'desc' ? -1 : 1;
       if (key === 'revenue') return (a.revenue - b.revenue) * direction;
+      if (key === 'name') return compareText(a.name, b.name) * direction;
+      if (key === 'category') return compareText(CATEGORY_LABELS[a.category] || a.category, CATEGORY_LABELS[b.category] || b.category) * direction;
+      if (key === 'contribution') return (getContributionPercent(a.revenue, summary.revenue) - getContributionPercent(b.revenue, summary.revenue)) * direction;
       return (a.qty - b.qty) * direction;
     });
+  const pagedItems = getPagedRows(filtered, menuItemSheetPage, REPORT_SHEET_PAGE_SIZE);
+  menuItemSheetPage = pagedItems.page;
   return `
     ${metricCardsHtml([
       { label: 'Tổng món đã bán', value: summary.itemQty.toLocaleString('vi-VN') },
@@ -615,7 +786,7 @@ const renderMenuStatsTab = (orders, summary) => {
     </div>
     <section class="staff-panel owner-menu-items-sheet">
       <div class="staff-panel-header owner-menu-header"><div class="owner-menu-header-row"><div class="search-bar owner-sheet-search"><span class="search-icon">${icon('search')}</span><input id="menu-stat-search" type="search" placeholder="Tìm tên món..." value="${escapeAttr(menuItemSearch)}"></div><select class="form-control" id="menu-stat-category"><option value="all">Mọi nhóm món</option>${Object.entries(CATEGORY_LABELS).map(([id, label]) => `<option value="${id}"${menuCategoryFilter === id ? ' selected' : ''}>${label}</option>`).join('')}</select></div></div>
-      <div class="staff-panel-body owner-sheet-body"><div class="owner-table-wrap"><table class="owner-table owner-spreadsheet"><thead><tr><th>Tên món</th><th>Nhóm món</th><th>${sheetSortButton('data-menu-stat-sort', menuItemSort, 'qty', 'Số lượng')}</th><th>${sheetSortButton('data-menu-stat-sort', menuItemSort, 'revenue', 'Doanh thu')}</th><th>Tỷ lệ đóng góp</th></tr></thead><tbody>${filtered.map((item) => `<tr><td>${escapeHtml(item.name)}</td><td>${escapeHtml(CATEGORY_LABELS[item.category] || item.category)}</td><td>${item.qty}</td><td>${formatPrice(item.revenue)}</td><td>${summary.revenue ? Math.round((item.revenue / summary.revenue) * 100) : 0}%</td></tr>`).join('') || `<tr><td colspan="5"><div class="empty-state"><h3>Không tìm thấy món</h3></div></td></tr>`}</tbody></table></div></div>
+      <div class="staff-panel-body owner-sheet-body"><div class="owner-table-wrap"><table class="owner-table owner-spreadsheet"><thead><tr><th>${sheetSortButton('data-menu-stat-sort', menuItemSort, 'name', 'Tên món')}</th><th>${sheetSortButton('data-menu-stat-sort', menuItemSort, 'category', 'Nhóm món')}</th><th>${sheetSortButton('data-menu-stat-sort', menuItemSort, 'qty', 'Số lượng')}</th><th>${sheetSortButton('data-menu-stat-sort', menuItemSort, 'revenue', 'Doanh thu')}</th><th>${sheetSortButton('data-menu-stat-sort', menuItemSort, 'contribution', 'Tỷ lệ đóng góp')}</th></tr></thead><tbody>${pagedItems.rows.map((item) => `<tr><td>${escapeHtml(item.name)}</td><td>${escapeHtml(CATEGORY_LABELS[item.category] || item.category)}</td><td>${item.qty}</td><td>${formatPrice(item.revenue)}</td><td>${getContributionPercent(item.revenue, summary.revenue)}%</td></tr>`).join('') || `<tr><td colspan="5"><div class="empty-state"><h3>Không tìm thấy món</h3></div></td></tr>`}</tbody>${ownerPaginationTableFooterHtml({ total: filtered.length, page: menuItemSheetPage, pageCount: pagedItems.pageCount, label: 'món', prevId: 'menu-stat-prev', nextId: 'menu-stat-next', colspan: 5 })}</table></div></div>
     </section>
   `;
 };
@@ -630,8 +801,13 @@ const renderOrdersTab = (orders) => {
     .sort((a, b) => {
       const { key, dir } = getSortState(orderSheetSort, 'createdAt');
       const direction = dir === 'desc' ? -1 : 1;
+      if (key === 'id') return compareText(a.id, b.id) * direction;
+      if (key === 'type') return compareText(ORDER_TYPE_LABELS[a.type] || a.type, ORDER_TYPE_LABELS[b.type] || b.type) * direction;
+      if (key === 'customerName') return compareText(a.customerName || 'Khách hàng', b.customerName || 'Khách hàng') * direction;
+      if (key === 'itemQty') return (a.itemQty - b.itemQty) * direction;
       if (key === 'total') return (a.total - b.total) * direction;
-      if (key === 'status') return a.status.localeCompare(b.status, 'vi') * direction;
+      if (key === 'paymentMethod') return compareText(PAYMENT_LABELS[a.paymentMethod] || a.paymentMethod, PAYMENT_LABELS[b.paymentMethod] || b.paymentMethod) * direction;
+      if (key === 'status') return compareText(getStatusMeta(a.status).label, getStatusMeta(b.status).label) * direction;
       return (a.createdAt - b.createdAt) * direction;
     });
   const pageCount = Math.max(1, Math.ceil(filtered.length / ORDER_PAGE_SIZE));
@@ -647,7 +823,7 @@ const renderOrdersTab = (orders) => {
           <select class="form-control" id="order-payment-filter"><option value="all">Mọi thanh toán</option>${Object.entries(PAYMENT_LABELS).map(([id, label]) => `<option value="${id}"${orderPaymentFilter === id ? ' selected' : ''}>${label}</option>`).join('')}</select>
         </div>
       </div>
-      <div class="staff-panel-body owner-sheet-body"><div class="owner-table-wrap owner-orders-table-wrap"><table class="owner-table owner-spreadsheet owner-orders-sheet"><colgroup><col class="owner-orders-col-id"><col class="owner-orders-col-type"><col class="owner-orders-col-date"><col class="owner-orders-col-customer"><col class="owner-orders-col-items"><col class="owner-orders-col-money"><col class="owner-orders-col-payment"><col class="owner-orders-col-status"></colgroup><thead><tr><th>Mã đơn</th><th>Loại đơn</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'createdAt', 'Ngày giờ')}</th><th>Khách hàng</th><th>Số lượng món</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'total', 'Tổng tiền')}</th><th>Thanh toán</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'status', 'Trạng thái')}</th></tr></thead><tbody>${pageRows.map((order) => `<tr data-order-detail="${escapeAttr(order.id)}"><td>${escapeHtml(order.id)}</td><td>${escapeHtml(ORDER_TYPE_LABELS[order.type] || order.type)}</td><td>${escapeHtml(formatDateTimeValue(order.createdAt))}</td><td>${escapeHtml(order.customerName || 'Khách hàng')}</td><td>${Number(order.itemQty || 0).toLocaleString('vi-VN')}</td><td>${formatPrice(order.total)}</td><td>${escapeHtml(PAYMENT_LABELS[order.paymentMethod] || order.paymentMethod)}</td><td>${statusBadge(order.status)}</td></tr>`).join('') || `<tr><td colspan="8"><div class="empty-state"><h3>Không có đơn hàng</h3><p>Thử đổi bộ lọc hoặc khoảng thời gian.</p></div></td></tr>`}</tbody>${ownerPaginationTableFooterHtml({ total: filtered.length, page: orderSheetPage, pageCount, label: 'đơn', prevId: 'order-prev', nextId: 'order-next', colspan: 8 })}</table></div></div>
+      <div class="staff-panel-body owner-sheet-body"><div class="owner-table-wrap owner-orders-table-wrap"><table class="owner-table owner-spreadsheet owner-orders-sheet"><colgroup><col class="owner-orders-col-id"><col class="owner-orders-col-type"><col class="owner-orders-col-date"><col class="owner-orders-col-customer"><col class="owner-orders-col-items"><col class="owner-orders-col-money"><col class="owner-orders-col-payment"><col class="owner-orders-col-status"></colgroup><thead><tr><th>${sheetSortButton('data-order-sort', orderSheetSort, 'id', 'Mã đơn')}</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'type', 'Loại đơn')}</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'createdAt', 'Ngày giờ')}</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'customerName', 'Khách hàng')}</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'itemQty', 'Số lượng món')}</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'total', 'Tổng tiền')}</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'paymentMethod', 'Thanh toán')}</th><th>${sheetSortButton('data-order-sort', orderSheetSort, 'status', 'Trạng thái')}</th></tr></thead><tbody>${pageRows.map((order) => `<tr data-order-detail="${escapeAttr(order.id)}"><td>${escapeHtml(order.id)}</td><td>${escapeHtml(ORDER_TYPE_LABELS[order.type] || order.type)}</td><td>${escapeHtml(formatDateTimeValue(order.createdAt))}</td><td>${escapeHtml(order.customerName || 'Khách hàng')}</td><td>${Number(order.itemQty || 0).toLocaleString('vi-VN')}</td><td>${formatPrice(order.total)}</td><td>${escapeHtml(PAYMENT_LABELS[order.paymentMethod] || order.paymentMethod)}</td><td>${statusBadge(order.status)}</td></tr>`).join('') || `<tr><td colspan="8"><div class="empty-state"><h3>Không có đơn hàng</h3><p>Thử đổi bộ lọc hoặc khoảng thời gian.</p></div></td></tr>`}</tbody>${ownerPaginationTableFooterHtml({ total: filtered.length, page: orderSheetPage, pageCount, label: 'đơn', prevId: 'order-prev', nextId: 'order-next', colspan: 8 })}</table></div></div>
     </section>
   `;
 };
@@ -695,6 +871,8 @@ const bindAnalyticsFilters = ({ bindRange = true } = {}) => {
     btn.addEventListener('click', () => {
       analyticsRange = btn.dataset.range;
       analyticsCustomMenuOpen = false;
+      resetReportSheetPages();
+      orderSheetPage = 1;
       rerenderOwnerPage();
     });
   });
@@ -713,11 +891,17 @@ const bindAnalyticsFilters = ({ bindRange = true } = {}) => {
     analyticsCustomStart = start;
     analyticsCustomEnd = end;
     analyticsCustomMenuOpen = false;
+    resetReportSheetPages();
+    orderSheetPage = 1;
     rerenderOwnerPage();
   });
   document.querySelectorAll('[data-order-detail]')?.forEach((el) => {
     el.addEventListener('click', () => openOrderDetailDrawer(el.dataset.orderDetail || el.closest('[data-order-detail]')?.dataset.orderDetail));
   });
+  document.querySelectorAll('[data-recent-order-sort]')?.forEach((btn) => btn.addEventListener('click', () => {
+    recentOrderSort = nextSort(recentOrderSort, btn.dataset.recentOrderSort);
+    rerenderOwnerPage();
+  }));
 };
 
 export const bindDashboardPage = () => bindAnalyticsFilters();
@@ -733,24 +917,45 @@ export const bindReportsPage = () => {
   });
   document.getElementById('report-group')?.addEventListener('change', (e) => {
     reportGroupBy = e.target.value;
-    rerenderOwnerPage();
+    revenueSheetPage = 1;
+    rerenderReportsPreservingScroll();
   });
   document.querySelectorAll('[data-revenue-sort]')?.forEach((btn) => btn.addEventListener('click', () => {
     revenueSort = nextSort(revenueSort, btn.dataset.revenueSort);
-    rerenderOwnerPage();
+    revenueSheetPage = 1;
+    rerenderReportsPreservingScroll();
   }));
+  document.getElementById('revenue-prev')?.addEventListener('click', () => {
+    revenueSheetPage = Math.max(1, revenueSheetPage - 1);
+    rerenderReportsPreservingScroll();
+  });
+  document.getElementById('revenue-next')?.addEventListener('click', () => {
+    revenueSheetPage += 1;
+    rerenderReportsPreservingScroll();
+  });
   document.getElementById('menu-stat-search')?.addEventListener('input', (e) => {
     menuItemSearch = e.target.value;
-    scheduleRenderPage();
+    menuItemSheetPage = 1;
+    scheduleReportsRenderPreservingScroll();
   });
   document.getElementById('menu-stat-category')?.addEventListener('change', (e) => {
     menuCategoryFilter = e.target.value;
-    rerenderOwnerPage();
+    menuItemSheetPage = 1;
+    rerenderReportsPreservingScroll();
   });
   document.querySelectorAll('[data-menu-stat-sort]')?.forEach((btn) => btn.addEventListener('click', () => {
     menuItemSort = nextSort(menuItemSort, btn.dataset.menuStatSort);
-    rerenderOwnerPage();
+    menuItemSheetPage = 1;
+    rerenderReportsPreservingScroll();
   }));
+  document.getElementById('menu-stat-prev')?.addEventListener('click', () => {
+    menuItemSheetPage = Math.max(1, menuItemSheetPage - 1);
+    rerenderReportsPreservingScroll();
+  });
+  document.getElementById('menu-stat-next')?.addEventListener('click', () => {
+    menuItemSheetPage += 1;
+    rerenderReportsPreservingScroll();
+  });
   document.getElementById('order-sheet-search')?.addEventListener('input', (e) => {
     orderSheetSearch = e.target.value;
     orderSheetPage = 1;

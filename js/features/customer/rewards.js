@@ -12,9 +12,17 @@ import { escapeHtml } from '../../core/html.js';
 const voucherValueLabel = (voucher = {}) =>
   voucher.type === 'percent' ? `${Number(voucher.value || 0)}%` : formatPrice(Number(voucher.value || 0));
 
+const formatVoucherDateTime = (value) => {
+  if (!value) return '';
+  const d = new Date(value);
+  return Number.isNaN(d.getTime())
+    ? value.toString()
+    : d.toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+};
+
 const voucherMetaLines = (voucher = {}) => {
   const minOrder = Number(voucher.minOrder || 0);
-  const expires = voucher.expiresAt ? `HSD ${escapeHtml(voucher.expiresAt)}` : 'Không giới hạn hạn dùng';
+  const expires = voucher.expiresAt ? `HSD ${escapeHtml(formatVoucherDateTime(voucher.expiresAt))}` : 'Không giới hạn hạn dùng';
   return [
     minOrder > 0 ? `Đơn từ ${formatPrice(minOrder)}` : 'Không yêu cầu đơn tối thiểu',
     expires,

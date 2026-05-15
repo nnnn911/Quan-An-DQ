@@ -39,10 +39,10 @@ export const renderStaffShell = ({
       <aside class="staff-sidebar" aria-label="Thanh điều hướng nhân viên">
         <div class="staff-sidebar-header">
           <div class="staff-brand">
-            <div class="staff-brand-icon" aria-hidden="true">🐔</div>
+            <img class="staff-brand-icon" src="assets/logos/logo-green.svg" alt="" aria-hidden="true">
             <div>
               <div class="staff-brand-title">Đồng Quê</div>
-              <div class="staff-brand-sub">Staff POS</div>
+              <div class="staff-brand-sub">Staff</div>
             </div>
           </div>
 
@@ -57,7 +57,7 @@ export const renderStaffShell = ({
 
         <nav class="staff-nav" aria-label="Menu">
           ${navItem('pos', 'POS', 'admin.html', icon('pos'))}
-          ${navItem('order', 'Đơn hàng (Order)', 'admin-order.html', icon('order'))}
+          ${navItem('order', 'Đơn hàng', 'admin-order.html', icon('order'))}
           ${navItem('preorder', 'Đơn Đặt trước', 'admin-preorder.html', icon('reservation'))}
         </nav>
 

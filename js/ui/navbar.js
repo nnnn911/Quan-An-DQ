@@ -160,7 +160,7 @@ const renderNavbar = () => {
         <span class="hamburger-line"></span>
       </button>
       <a href="#" class="navbar-logo" id="navbar-logo" aria-label="Quán Ăn Đồng Quê - Trang chủ">
-        <div class="navbar-logo-icon" aria-hidden="true">🐔</div>
+        <img class="navbar-logo-icon" src="assets/logos/logo-white.svg" alt="" aria-hidden="true">
         <div class="navbar-logo-text">
           <span class="navbar-logo-name">Đồng Quê</span>
           <span class="navbar-logo-tagline">Quán Gà & Vịt</span>

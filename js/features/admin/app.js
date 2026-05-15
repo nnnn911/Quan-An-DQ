@@ -20,10 +20,12 @@ const MENU_FILTERS = [
 
 const POS_PAYMENT_METHODS = [
   { id: 'cash', name: 'Tiền mặt', icon: 'cash' },
-  { id: 'transfer', name: 'Chuyển khoản', icon: 'bank' },
+  { id: 'bank', name: 'Chuyển khoản', icon: 'bank' },
   { id: 'momo', name: 'MoMo', icon: 'momo' },
   { id: 'vnpay', name: 'VNPay', icon: 'vnpay' },
 ];
+
+const normalizePaymentMethod = (method) => method === 'transfer' ? 'bank' : method;
 
 const getPosCart = () => {
   const cart = readJson(POS_CART_KEY, []);
@@ -344,7 +346,7 @@ const getPosDraft = () => {
     ? {
         customerName: (d.customerName || '').toString(),
         phone: (d.phone || '').toString(),
-        payment: (d.payment || 'cash').toString(),
+        payment: normalizePaymentMethod((d.payment || 'cash').toString()),
         note: (d.note || '').toString(),
         search: (d.search || '').toString(),
         category: (d.category || 'all').toString(),
@@ -360,7 +362,7 @@ const setPosDraft = (next) => {
   writeJson(POS_DRAFT_KEY, {
     customerName: (safe.customerName || '').toString(),
     phone: (safe.phone || '').toString(),
-    payment: (safe.payment || 'cash').toString(),
+    payment: normalizePaymentMethod((safe.payment || 'cash').toString()),
     note: (safe.note || '').toString(),
     search: (safe.search || '').toString(),
     category,
@@ -403,7 +405,6 @@ const renderLogin = () => {
                   <span class="input-icon" aria-hidden="true">${icon('phone')}</span>
                   <input class="form-control" id="staff-phone" type="tel" autocomplete="tel" placeholder="0902222333" required>
                 </div>
-                <div class="form-hint" style="margin-top:6px">SĐT mặc định: <strong>0902222333</strong></div>
               </div>
               <div class="form-group">
                 <label class="form-label" for="staff-password">Mật khẩu</label>
@@ -412,7 +413,6 @@ const renderLogin = () => {
                   <input class="form-control" id="staff-password" type="password" autocomplete="current-password" placeholder="123456" required>
                   <span class="input-icon-right" id="toggle-staff-pw" role="button" aria-label="Hiện mật khẩu" title="Hiện mật khẩu">${icon('showpassword')}</span>
                 </div>
-                <div class="form-hint" style="margin-top:6px">Mật khẩu mặc định: <strong>123456</strong></div>
               </div>
               <div id="staff-login-error" class="form-error" style="display:none;margin-bottom:var(--space-4)"></div>
               <button type="submit" class="btn btn-primary btn-block btn-lg">Đăng nhập</button>

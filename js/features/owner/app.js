@@ -104,6 +104,32 @@ const bindPage = () => {
   else bindMenuPage();
 };
 
+const getScrollState = (root) => ({
+  windowX: window.scrollX,
+  windowY: window.scrollY,
+  regions: ['.owner-page', '.owner-table-wrap'].flatMap((selector) => (
+    [...root.querySelectorAll(selector)].map((el, index) => ({
+      selector,
+      index,
+      left: el.scrollLeft,
+      top: el.scrollTop,
+    }))
+  )),
+});
+
+const restoreScrollState = (root, state) => {
+  requestAnimationFrame(() => {
+    window.scrollTo({ left: state.windowX, top: state.windowY, behavior: 'auto' });
+    state.regions.forEach(({ selector, index, left, top }) => {
+      const el = root.querySelectorAll(selector)[index];
+      if (el) {
+        el.scrollLeft = left;
+        el.scrollTop = top;
+      }
+    });
+  });
+};
+
 const renderPage = () => {
   if (!getCurrentOwner()) {
     renderLogin();
@@ -112,6 +138,8 @@ const renderPage = () => {
   invalidateOwnerData();
   const root = document.getElementById('page-content');
   root.classList.add('page-content--staff');
+  const content = root.querySelector('.staff-content');
+  const scrollState = content ? getScrollState(root) : null;
   const activeEl = document.activeElement;
   const activeState = activeEl?.id && root.contains(activeEl)
     ? {
@@ -120,7 +148,6 @@ const renderPage = () => {
       end: typeof activeEl.selectionEnd === 'number' ? activeEl.selectionEnd : null,
     }
     : null;
-  const content = root.querySelector('.staff-content');
   if (content) {
     content.innerHTML = getPageHtml();
   } else {
@@ -136,11 +163,12 @@ const renderPage = () => {
   bindPage();
   if (activeState) {
     const nextActive = document.getElementById(activeState.id);
-    nextActive?.focus();
+    nextActive?.focus({ preventScroll: true });
     if (nextActive && activeState.start !== null && typeof nextActive.setSelectionRange === 'function') {
       nextActive.setSelectionRange(activeState.start, activeState.end ?? activeState.start);
     }
   }
+  if (scrollState) restoreScrollState(root, scrollState);
 };
 
 document.addEventListener('DOMContentLoaded', () => {

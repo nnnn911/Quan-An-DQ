@@ -32,7 +32,7 @@ const createModal = () => {
     <div class="modal" role="document">
       <div class="modal-body" style="padding:var(--space-8)">
         <div class="auth-logo">
-          <div class="auth-logo-icon" aria-hidden="true">${icon('user')}</div>
+          <img class="auth-logo-icon" src="assets/logos/logo-white.svg" alt="" aria-hidden="true">
           <div class="auth-logo-title">Quán Ăn Đồng Quê</div>
           <div class="auth-logo-sub">Đăng nhập để đặt hàng và tích điểm</div>
         </div>
@@ -43,7 +43,7 @@ const createModal = () => {
             <label class="form-label" for="login-phone">Số điện thoại</label>
             <div class="input-group">
               <span class="input-icon" aria-hidden="true">${icon('phone')}</span>
-              <input class="form-control" type="tel" id="login-phone" name="phone" placeholder="0901234567" autocomplete="tel" required>
+              <input class="form-control" type="tel" id="login-phone" name="phone" placeholder="0999999999" autocomplete="tel" required>
             </div>
           </div>
           <div class="form-group">

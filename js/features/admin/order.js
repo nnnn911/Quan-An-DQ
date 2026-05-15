@@ -45,7 +45,7 @@ const canCancelOrder = (statusKey, order = null) => {
 
 const PAYMENT_LABELS = {
   cash: 'Tiền mặt',
-  transfer: 'Chuyển khoản',
+  bank: 'Chuyển khoản',
   momo: 'MoMo',
   vnpay: 'VNPay',
 };
@@ -71,7 +71,7 @@ const TABS = [
   { id: 'all', label: 'Tất cả' },
 ];
 
-let tabId = 'all';
+let tabId = 'need';
 let searchQuery = '';
 let selectedOrderId = null;
 
@@ -302,6 +302,33 @@ const renderSelectedOrderDetail = () => {
   });
 };
 
+const renderOrderList = (listEl, rows) => {
+  if (!listEl) return;
+
+  if (!rows.length) {
+    listEl.innerHTML = `
+      <div class="empty-state" style="padding:var(--space-10) 0">
+        <div class="empty-state-icon">${icon('order', 'Đơn hàng')}</div>
+        <h3>Không có đơn hàng</h3>
+        <p>${searchQuery ? 'Không tìm thấy đơn phù hợp.' : 'Chưa có đơn nào trong hệ thống.'}</p>
+      </div>
+    `;
+  } else {
+    listEl.innerHTML = `<div class="staff-list">${rows.map(renderListItem).join('')}</div>`;
+    listEl.querySelectorAll('[data-select]')?.forEach((el) => {
+      el.addEventListener('click', () => {
+        selectedOrderId = el.dataset.select;
+        listEl.querySelectorAll('[data-select]').forEach((item) => {
+          item.classList.toggle('active', item.dataset.select === selectedOrderId);
+        });
+        renderSelectedOrderDetail();
+      });
+    });
+  }
+
+  renderSelectedOrderDetail();
+};
+
 const renderPage = () => {
   const all = getSortedOrders();
   const filtered = filterOrders(all);
@@ -345,31 +372,8 @@ const renderPage = () => {
   };
   bindStaffChrome({ onLogout: doLogout });
 
-  // render list
   const listEl = document.getElementById('order-list');
-
-  if (!filtered.length) {
-    listEl.innerHTML = `
-      <div class="empty-state" style="padding:var(--space-10) 0">
-        <div class="empty-state-icon">${icon('order', 'Đơn hàng')}</div>
-        <h3>Không có đơn hàng</h3>
-        <p>${searchQuery ? 'Không tìm thấy đơn phù hợp.' : 'Chưa có đơn nào trong hệ thống.'}</p>
-      </div>
-    `;
-  } else {
-    listEl.innerHTML = `<div class="staff-list">${filtered.map(renderListItem).join('')}</div>`;
-    listEl.querySelectorAll('[data-select]')?.forEach((el) => {
-      el.addEventListener('click', () => {
-        selectedOrderId = el.dataset.select;
-        listEl.querySelectorAll('[data-select]').forEach((item) => {
-          item.classList.toggle('active', item.dataset.select === selectedOrderId);
-        });
-        renderSelectedOrderDetail();
-      });
-    });
-  }
-
-  renderSelectedOrderDetail();
+  renderOrderList(listEl, filtered);
 
   // bind tabs
   document.querySelectorAll('[data-tab]')?.forEach((btn) => {
@@ -382,7 +386,9 @@ const renderPage = () => {
   // bind search
   document.getElementById('order-search')?.addEventListener('input', (e) => {
     searchQuery = e.target.value;
-    renderPage();
+    const nextFiltered = filterOrders(all);
+    ensureSelected(all, nextFiltered);
+    renderOrderList(listEl, nextFiltered);
   });
 };
 
